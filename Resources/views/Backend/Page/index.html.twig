@@ -1,0 +1,23 @@
+{% extends "NeutronAdminBundle::layout.html.twig" %}
+
+{% block headTitle %} {% trans from "NeutronUserBundle" %}head_title{% endtrans %} {% endblock %}
+
+{% block headDesc %}
+    <h1 class="icon dashboard">
+        {% trans from "NeutronUserBundle" %}header{% endtrans %} <small>some description</small>
+    </h1>
+{% endblock %}
+
+{% block body %}
+<div class="row">
+	<div class="grid12">
+		<article class="panel">
+		 	<header class="divider">
+		 	    <h2>{% trans from "NeutronUserBundle" %}subheader{% endtrans %}</h2>
+		 	</header>
+
+		</article>
+
+	</div>
+</div>
+{% endblock %}
