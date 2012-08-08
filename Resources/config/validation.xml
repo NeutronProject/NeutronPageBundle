@@ -1,0 +1,69 @@
+<?xml version="1.0" ?>
+<constraint-mapping xmlns="http://symfony.com/schema/dic/constraint-mapping"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/constraint-mapping
+        http://symfony.com/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd">
+
+    <class name="Neutron\PageBundle\Entity\Page">   
+
+	     
+        <property name="title">
+        	<constraint name="NotBlank">
+                <option name="message">title.blank</option>
+                <option name="groups">
+                    <value>page</value>
+                </option>
+            </constraint>
+            <constraint name="MinLength">
+                <option name="limit">2</option>
+                <option name="message">title.short</option>
+                <option name="groups">
+                    <value>page</value>
+                </option>
+            </constraint>
+            <constraint name="MaxLength">
+                <option name="limit">255</option>
+                <option name="message">title.long</option>
+                <option name="groups">
+                    <value>page</value>
+                </option>
+            </constraint>
+        </property>
+        
+        <property name="pageImage">
+        	<constraint name="Neutron\Bundle\FormBundle\Validator\Constraint\Image">
+                <option name="requiredMessage">image.blank</option>
+                <option name="groups">
+                    <value>page</value>
+                </option>
+            </constraint>
+        </property>
+        
+        <property name="content">
+        	<constraint name="NotBlank">
+                <option name="message">content.blank</option>
+                <option name="groups">
+                    <value>page</value>
+                </option>
+            </constraint>
+            <constraint name="MinLength">
+                <option name="limit">10</option>
+                <option name="message">content.short</option>
+                <option name="groups">
+                    <value>page</value>
+                </option>
+            </constraint>
+        </property>
+        
+        <property name="template">
+        	<constraint name="NotBlank">
+                <option name="message">template.blank</option>
+                <option name="groups">
+                    <value>page</value>
+                </option>
+            </constraint>
+        </property>
+        
+    </class>
+
+</constraint-mapping>

@@ -7,7 +7,12 @@
 
     <parameters>
         <parameter key="neutron_page.event_listener.main_menu.class">Neutron\PageBundle\EventListener\MainMenuListener</parameter>
-        <parameter key="neutron_page.controller.page.class">Neutron\PageBundle\Controller\Backend\PageController</parameter>
+        <parameter key="neutron_page.controller.page.default.class">Neutron\PageBundle\Controller\Backend\PageController</parameter>
+        <parameter key="neutron_page.manager.page.default.class">Neutron\PageBundle\Doctrine\ORM\PageManager</parameter>
+        <parameter key="neutron_page.form.type.page.class">Neutron\PageBundle\Form\Type\PageType</parameter>
+        <parameter key="neutron_page.form.type.page.content.class">Neutron\PageBundle\Form\Type\Page\ContentType</parameter>
+        <parameter key="neutron_page.form.handler.page.default.class">Neutron\PageBundle\Form\Handler\PageHandler</parameter>
+        <parameter key="neutron_page.doctrine.event_subscriber.category.class">Neutron\PageBundle\Doctrine\EventSubscriber\CategorySubscriber</parameter>
     </parameters>
 
     <services>
@@ -17,17 +22,52 @@
         </service>
 
 	
-		<service id="neutron_page.controller.page" class="%neutron_page.controller.page%">
+		<service id="neutron_page.controller.page.default" class="%neutron_page.controller.page.default.class%">
 		    <call method="setContainer">
 		        <argument type="service" id="service_container" />
 		    </call>
 		</service>
 		
-		<service id="neutron_page.controller.page" class="%neutron_page.controller.page.class%">
-		    <call method="setContainer">
-		        <argument type="service" id="service_container" />
-		    </call>
+		<service id="neutron_page.manager.page.default" class="%neutron_page.manager.page.default.class%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument>%neutron_page.page_class%</argument>
+        </service>
+        
+		<service id="neutron_page.page.form" factory-method="createNamed" factory-service="form.factory" class="Symfony\Component\Form\Form">
+            <argument>%neutron_page.page.form.name%</argument>
+            <argument>%neutron_page.form.type.page%</argument>
+        </service>
+        
+        <service id="neutron_page.form.type.page" class="%neutron_page.form.type.page.class%">
+			<tag name="form.type" alias="neutron_page_form_page" />
+        </service>
+        
+        		
+		<service id="neutron_page.form.type.page.content" class="%neutron_page.form.type.page.content.class%">
+		    <argument>%neutron_page.page_class%</argument>
+            <argument>%neutron_page.page_image_class%</argument>
+            <argument>%neutron_page.templates%</argument>
+            <argument>%neutron_page.media%</argument>
+		    <tag name="form.type" alias="neutron_page_form_type_page_content" />
 		</service>
+		
+		<service id="neutron_page.form.handler.page.default" 
+			class="%neutron_page.form.handler.page.default.class%" 
+			scope="request" 
+			public="false">
+			
+            <argument type="service" id="neutron_page.page.form" />
+            <argument type="service" id="neutron_component.form.helper.form_helper" />
+            <argument type="service" id="request" />
+            <argument type="service" id="router" />
+            <argument type="service" id="neutron_page.manager.page" />
+        </service>
+
+    	<service id="neutron_page.doctrine.event_subscriber.category" class="%neutron_page.doctrine.event_subscriber.category.class%">
+            <argument>%neutron_admin.category.tree_data_class%</argument>
+            <argument>%neutron_page.page_class%</argument>
+            <tag name="doctrine.event_subscriber" connection="default" />
+        </service>
 	
 	</services>
 	

@@ -15,7 +15,13 @@
 		 	<header class="divider">
 		 	    <h2>{% trans from "NeutronUserBundle" %}subheader{% endtrans %}</h2>
 		 	</header>
-
+            {{ neutron_form_tabs(
+                  form, 
+                {'submit_label': 'save', 'translation_domain': 'NeutronPageBundle'},
+                {
+                    'cancel': {'label': 'cancel', 'style': 'btn action', 'url': '#cancel'}
+                }
+           ) }}
 		</article>
 
 	</div>

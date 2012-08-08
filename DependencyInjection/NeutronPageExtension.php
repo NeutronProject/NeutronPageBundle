@@ -24,5 +24,20 @@ class NeutronPageExtension extends Extension
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
+        
+        
+        $container->setParameter('neutron_page.page_class', $config['page_class']);
+        $container->setParameter('neutron_page.page_image_class', $config['page_image_class']);
+        $container->setAlias('neutron_page.controller.page', $config['page_controller']);
+        $container->setAlias('neutron_page.manager.page', $config['page_manager']);
+        
+        
+        $container->setParameter('neutron_page.templates', $config['templates']);
+        $container->setParameter('neutron_page.media', $config['media']);
+        
+        $container->setAlias('neutron_page.page.form.handler', $config['form']['handler']);
+        $container->setParameter('neutron_page.form.type.page', $config['form']['type']);
+        $container->setParameter('neutron_page.page.form.name', $config['form']['name']);
+
     }
 }
