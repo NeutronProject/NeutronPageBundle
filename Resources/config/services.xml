@@ -6,6 +6,7 @@
 
 
     <parameters>
+        <parameter key="neutron_page.plugin.class">Neutron\PageBundle\PagePlugin</parameter>
         <parameter key="neutron_page.event_listener.main_menu.class">Neutron\PageBundle\EventListener\MainMenuListener</parameter>
         <parameter key="neutron_page.controller.page.default.class">Neutron\PageBundle\Controller\Backend\PageController</parameter>
         <parameter key="neutron_page.manager.page.default.class">Neutron\PageBundle\Doctrine\ORM\PageManager</parameter>
@@ -17,6 +18,12 @@
 
     <services>
     
+        <service id="neutron_page.plugin" class="%neutron_page.plugin.class%">
+        	<argument type="service" id="router" />
+        	<argument type="service" id="translator" />
+            <tag name="neutron.plugin" alias="neutron.plugin.page"/>
+        </service>
+        
         <service id="neutron_page.event_listener.main_menu" class="%neutron_page.event_listener.main_menu.class%">
             <!-- <tag name="kernel.event_listener" event="neutron_admin.onMenuConfigure" method="onMenuConfigure"/> -->
         </service>
@@ -56,11 +63,15 @@
 			scope="request" 
 			public="false">
 			
+            <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="neutron_page.page.form" />
             <argument type="service" id="neutron_component.form.helper.form_helper" />
             <argument type="service" id="request" />
             <argument type="service" id="router" />
             <argument type="service" id="neutron_page.manager.page" />
+            <argument type="service" id="neutron_admin.acl.manager" />
+            <argument type="service" id="neutron_tree.manager.factory" />
+			<argument>%neutron_admin.category.tree_data_class%</argument>
         </service>
 
     	<service id="neutron_page.doctrine.event_subscriber.category" class="%neutron_page.doctrine.event_subscriber.category.class%">

@@ -1,6 +1,10 @@
 <?php
 namespace Neutron\PageBundle\Controller\Backend;
 
+use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
+
+use Neutron\TreeBundle\Model\TreeNodeInterface;
+
 use Doctrine\ORM\EntityManager;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -15,14 +19,19 @@ use Symfony\Component\DependencyInjection\ContainerAware;
 
 class PageController extends ContainerAware
 {
-    public function indexAction($categoryId, $pageId = false)
+    public function indexAction($id)
     {   
+        $category = $this->getCategory($id);
+        $page = $this->getPage($category);
         
-        $page = $this->getPage($categoryId, $pageId);
         $form = $this->container->get('neutron_page.page.form');
         $handler = $this->container->get('neutron_page.page.form.handler');
 
-        $form->setData(array('content' => $page));
+        $form->setData(array(
+            'general' => $category, 
+            'content' => $page, 
+            'acl' => $this->container->get('neutron_admin.acl.manager')
+                ->getPermissions(ObjectIdentity::fromDomainObject($category))));
         
         if (null !== $handler->process()){
             
@@ -51,20 +60,16 @@ class PageController extends ContainerAware
         return $category;
     }
     
-    private function getPage($categoryId, $pageId)
+    private function getPage(TreeNodeInterface $category)
     {
         $pageManager = $this->container->get('neutron_page.manager.page');
         
-        if ($pageId){
-            $page = $pageManager->findPageBy(array('id' => $pageId));
-        } else {
-            $page = $pageManager->createPage($this->getCategory($categoryId));
-        }
+        $page = $pageManager->findPageBy(array('category' => $category));
         
         if (!$page){
-            throw new NotFoundHttpException();
+            $page = $pageManager->createPage($category);
         }
-        
+
         return $page;
     }
 }

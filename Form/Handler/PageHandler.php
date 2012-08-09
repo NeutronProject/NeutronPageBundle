@@ -1,6 +1,16 @@
 <?php
 namespace Neutron\PageBundle\Form\Handler;
 
+use Doctrine\ORM\EntityManager;
+
+use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
+
+use Neutron\TreeBundle\Model\TreeManagerFactoryInterface;
+
+use Neutron\AdminBundle\Acl\AclManagerInterface;
+
+use Neutron\PageBundle\Model\PageManagerInterface;
+
 use Neutron\ComponentBundle\Form\Handler\FormHandlerInterface;
 
 use Neutron\PageBundle\Model\PageInterface;
@@ -18,47 +28,46 @@ use Symfony\Component\HttpFoundation\Request;
 class PageHandler implements FormHandlerInterface
 {
     
+    protected $em;
     protected $request;
     protected $router;
     protected $form;
     protected $formHelper;
-    protected $manager;
+    protected $pageManager;
+    protected $aclManager;
+    protected $treeManager;
     protected $result;
 
 
-    public function __construct(Form $form, FormHelper $formHelper, 
-            Request $request, Router $router, $manager)
+    public function __construct(EntityManager $em, Form $form, FormHelper $formHelper, Request $request, Router $router, 
+            PageManagerInterface $pageManager, AclManagerInterface $aclManager, TreeManagerFactoryInterface $treeManager, $treeClass)
     {
+        $this->em = $em;
         $this->form = $form;
         $this->formHelper = $formHelper;
         $this->request = $request;
         $this->router = $router;
-        $this->manager = $manager;
+        $this->pageManager = $pageManager;
+        $this->aclManager = $aclManager;
+        $this->treeManager = $treeManager->getManagerForClass($treeClass);
     }
 
     public function process()
     {
-  
         if ($this->request->isXmlHttpRequest()) {
             
             $this->form->bind($this->request);
  
             if ($this->form->isValid()) {
-          
-                $data = $this->form->getData();
-                $this->manager->updatePage($data['content']);
                 
-                $this->request->getSession()
-                    ->getFlashBag()->add('neutron_page.create.success', 'neutron_page.create.success.flash');
-                
+                $this->onSucess();
+            
                 $this->result = array(
                     'success' => true,
-                    //'redirect_uri' => $this->router->generate('neutron_admin')
                 );
                 
                 return true;
-                
-                
+  
             } else {
                 $this->result = array(
                     'success' => false,
@@ -67,14 +76,30 @@ class PageHandler implements FormHandlerInterface
                 
                 return false;
             }
-            
-            
+  
         }
-
     }
     
-
-
+    protected function onSucess()
+    {
+        $pageManager = $this->pageManager;
+        $treeManager = $this->treeManager;
+        $aclManager = $this->aclManager;
+        
+        $node = $this->form->get('general')->getData();
+        $page = $this->form->get('content')->getData();
+        $acl = $this->form->get('acl')->getData();
+        
+        $this->em->transactional(function(EntityManager $em)
+                use ($pageManager, $treeManager, $aclManager, $node, $page, $acl){
+        
+            $pageManager->updatePage($page);
+            $treeManager->updateNode($node);
+            $aclManager
+                ->setObjectPermissions(ObjectIdentity::fromDomainObject($node), $acl);
+        });
+    }
+    
     public function getResult()
     {
         return $this->result;
