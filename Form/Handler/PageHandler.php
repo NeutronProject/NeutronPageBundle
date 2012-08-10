@@ -1,6 +1,8 @@
 <?php
 namespace Neutron\PageBundle\Form\Handler;
 
+use Symfony\Component\Translation\TranslatorInterface;
+
 use Doctrine\ORM\EntityManager;
 
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
@@ -31,6 +33,7 @@ class PageHandler implements FormHandlerInterface
     protected $em;
     protected $request;
     protected $router;
+    protected $translator;
     protected $form;
     protected $formHelper;
     protected $pageManager;
@@ -40,13 +43,15 @@ class PageHandler implements FormHandlerInterface
 
 
     public function __construct(EntityManager $em, Form $form, FormHelper $formHelper, Request $request, Router $router, 
-            PageManagerInterface $pageManager, AclManagerInterface $aclManager, TreeManagerFactoryInterface $treeManager, $treeClass)
+            TranslatorInterface $translator, PageManagerInterface $pageManager, AclManagerInterface $aclManager, 
+            TreeManagerFactoryInterface $treeManager, $treeClass)
     {
         $this->em = $em;
         $this->form = $form;
         $this->formHelper = $formHelper;
         $this->request = $request;
         $this->router = $router;
+        $this->translator = $translator;
         $this->pageManager = $pageManager;
         $this->aclManager = $aclManager;
         $this->treeManager = $treeManager->getManagerForClass($treeClass);
@@ -64,6 +69,7 @@ class PageHandler implements FormHandlerInterface
             
                 $this->result = array(
                     'success' => true,
+                    'successMsg' => $this->translator->trans('form.success', array(), 'NeutronPageBundle')
                 );
                 
                 return true;
