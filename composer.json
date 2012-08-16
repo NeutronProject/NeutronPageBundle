@@ -1,5 +1,5 @@
 {
-    "name":         "neutron/neutron-page-bundle",
+    "name":         "neutron/plugin/neutron-page-bundle",
     "description":  "To be completed",
     "keywords":     ["page"],
     "type":         "symfony-bundle",
@@ -14,7 +14,7 @@
         "symfony/framework-bundle": ">=2.1,<2.2-dev"
     },
     "autoload":     {
-        "psr-0": { "Neutron\\PageBundle": "" }
+        "psr-0": { "Neutron\\Plugin\\PageBundle": "" }
     },
-    "target-dir": "Neutron/PageBundle"
+    "target-dir": "Neutron/Plugin/PageBundle"
 }
