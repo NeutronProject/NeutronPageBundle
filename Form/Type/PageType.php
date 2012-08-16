@@ -20,7 +20,7 @@ class PageType extends AbstractType
     
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('general', 'neutron_admin_form_category_general');
+        $builder->add('general', 'neutron_admin_form_category');
         $builder->add('content', 'neutron_page_form_type_page_content');
         $builder->add('panels', 'neutron_layout', array(
             'plugin' => 'neutron.plugin.page',

@@ -9,7 +9,7 @@ use Neutron\Plugin\PageBundle\Model\PageInterface;
 
 use Neutron\Plugin\PageBundle\Model\PageManagerInterface;
 
-class PageManager implements PageManagerInterface
+class PageManager implements PageManagerInterface 
 {
         
     protected $em;
