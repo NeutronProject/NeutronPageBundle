@@ -6,7 +6,7 @@
 
 
     <parameters>
-        <parameter key="neutron_page.plugin.class">Neutron\Plugin\PageBundle\PagePlugin</parameter>
+        <parameter key="neutron_page.plugin.builder.class">Neutron\Plugin\PageBundle\PagePlugin</parameter>
         <parameter key="neutron_page.event_listener.main_menu.class">Neutron\Plugin\PageBundle\EventListener\MainMenuListener</parameter>
         <parameter key="neutron_page.controller.page.default.class">Neutron\Plugin\PageBundle\Controller\Backend\PageController</parameter>
         <parameter key="neutron_page.manager.page.default.class">Neutron\Plugin\PageBundle\Doctrine\ORM\PageManager</parameter>
@@ -18,7 +18,7 @@
 
     <services>
 
-        <service id="neutron_page.plugin" class="%neutron_page.plugin.class%">
+        <service id="neutron_page.plugin.builder" class="%neutron_page.plugin.builder.class%">
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="neutron_layout.plugin.factory" />
             <argument type="service" id="router" />
@@ -26,9 +26,9 @@
         </service>
         
         
-        <service id="neutron_plugin_page.factory" 
+        <service id="neutron_page.plugin" 
         	class="Neutron\LayoutBundle\Plugin\PluginFactory"
-        	factory-service="neutron_page.plugin"
+        	factory-service="neutron_page.plugin.builder"
         	factory-method="create"
         >
             <tag name="neutron.plugin" alias="neutron.plugin.page"/>
@@ -94,7 +94,7 @@
         
     	<service id="neutron_page.layout_manager" parent="neutron_layout.layout_manager">
             <call method="setPlugin">
-                <argument type="service" id="neutron_plugin_page.factory" />
+                <argument type="service" id="neutron_page.plugin" />
             </call> 
         </service>
 	

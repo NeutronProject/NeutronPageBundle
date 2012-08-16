@@ -25,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="Neutron\Plugin\PageBundle\Entity\Repository\PageRepository")
  * 
  */
-class Page implements PageInterface
+class Page implements PageInterface 
 {
     /**
      * @var integer 
