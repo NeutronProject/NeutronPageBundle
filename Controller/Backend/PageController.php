@@ -1,5 +1,5 @@
 <?php
-namespace Neutron\PageBundle\Controller\Backend;
+namespace Neutron\Plugin\PageBundle\Controller\Backend;
 
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityManager;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-use Neutron\PageBundle\Form\Type\PageType;
+use Neutron\Plugin\PageBundle\Form\Type\PageType;
 
 use Symfony\Component\Form\FormFactory;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Neutron\PageBundle\DependencyInjection;
+namespace Neutron\Plugin\PageBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 
@@ -42,8 +42,8 @@ class Configuration implements ConfigurationInterface
         $node
             ->addDefaultsIfNotSet()
             ->children()
-                ->scalarNode('page_class')->defaultValue('Neutron\PageBundle\Entity\Page')->end()
-                ->scalarNode('page_image_class')->defaultValue('Neutron\PageBundle\Entity\PageImage')->end()
+                ->scalarNode('page_class')->defaultValue('Neutron\Plugin\PageBundle\Entity\Page')->end()
+                ->scalarNode('page_image_class')->defaultValue('Neutron\Plugin\PageBundle\Entity\PageImage')->end()
                 ->scalarNode('page_controller')->defaultValue('neutron_page.controller.page.default')->end()
                 ->scalarNode('page_manager')->defaultValue('neutron_page.manager.page.default')->end()
             ->end()

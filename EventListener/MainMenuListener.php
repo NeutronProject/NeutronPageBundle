@@ -1,5 +1,5 @@
-<?php
-namespace Neutron\PageBundle\EventListener;
+<?php 
+namespace Neutron\Plugin\PageBundle\EventListener;
 
 use Knp\Menu\FactoryInterface;
 

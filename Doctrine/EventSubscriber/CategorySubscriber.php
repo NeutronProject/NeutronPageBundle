@@ -1,5 +1,5 @@
 <?php
-namespace Neutron\PageBundle\Doctrine\EventSubscriber;
+namespace Neutron\Plugin\PageBundle\Doctrine\EventSubscriber;
 
 use Doctrine\ORM\EntityManager;
 

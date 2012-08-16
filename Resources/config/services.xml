@@ -6,14 +6,14 @@
 
 
     <parameters>
-        <parameter key="neutron_page.plugin.class">Neutron\PageBundle\PagePlugin</parameter>
-        <parameter key="neutron_page.event_listener.main_menu.class">Neutron\PageBundle\EventListener\MainMenuListener</parameter>
-        <parameter key="neutron_page.controller.page.default.class">Neutron\PageBundle\Controller\Backend\PageController</parameter>
-        <parameter key="neutron_page.manager.page.default.class">Neutron\PageBundle\Doctrine\ORM\PageManager</parameter>
-        <parameter key="neutron_page.form.type.page.class">Neutron\PageBundle\Form\Type\PageType</parameter>
-        <parameter key="neutron_page.form.type.page.content.class">Neutron\PageBundle\Form\Type\Page\ContentType</parameter>
-        <parameter key="neutron_page.form.handler.page.default.class">Neutron\PageBundle\Form\Handler\PageHandler</parameter>
-        <parameter key="neutron_page.doctrine.event_subscriber.category.class">Neutron\PageBundle\Doctrine\EventSubscriber\CategorySubscriber</parameter>
+        <parameter key="neutron_page.plugin.class">Neutron\Plugin\PageBundle\PagePlugin</parameter>
+        <parameter key="neutron_page.event_listener.main_menu.class">Neutron\Plugin\PageBundle\EventListener\MainMenuListener</parameter>
+        <parameter key="neutron_page.controller.page.default.class">Neutron\Plugin\PageBundle\Controller\Backend\PageController</parameter>
+        <parameter key="neutron_page.manager.page.default.class">Neutron\Plugin\PageBundle\Doctrine\ORM\PageManager</parameter>
+        <parameter key="neutron_page.form.type.page.class">Neutron\Plugin\PageBundle\Form\Type\PageType</parameter>
+        <parameter key="neutron_page.form.type.page.content.class">Neutron\Plugin\PageBundle\Form\Type\Page\ContentType</parameter>
+        <parameter key="neutron_page.form.handler.page.default.class">Neutron\Plugin\PageBundle\Form\Handler\PageHandler</parameter>
+        <parameter key="neutron_page.doctrine.event_subscriber.category.class">Neutron\Plugin\PageBundle\Doctrine\EventSubscriber\CategorySubscriber</parameter>
     </parameters>
 
     <services>

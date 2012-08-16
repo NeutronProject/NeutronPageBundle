@@ -1,5 +1,5 @@
 <?php
-namespace Neutron\PageBundle\Form\Type;
+namespace Neutron\Plugin\PageBundle\Form\Type;
 
 use Symfony\Component\HttpFoundation\Request;
 

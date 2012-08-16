@@ -1,13 +1,13 @@
 <?php
-namespace Neutron\PageBundle\Doctrine\ORM;
+namespace Neutron\Plugin\PageBundle\Doctrine\ORM;
 
 use Neutron\TreeBundle\Model\TreeNodeInterface;
 
 use Doctrine\ORM\EntityManager;
 
-use Neutron\PageBundle\Model\PageInterface;
+use Neutron\Plugin\PageBundle\Model\PageInterface;
 
-use Neutron\PageBundle\Model\PageManagerInterface;
+use Neutron\Plugin\PageBundle\Model\PageManagerInterface;
 
 class PageManager implements PageManagerInterface
 {

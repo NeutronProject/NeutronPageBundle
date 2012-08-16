@@ -1,28 +1,28 @@
 <?php
 /*
- * This file is part of NeutronAdminBundle
-*
-* (c) Zender <azazen09@gmail.com>
-*
-* This source file is subject to the MIT license that is bundled
-* with this source code in the file LICENSE.
-*/
-namespace Neutron\PageBundle\Entity;
+ * This file is part of NeutronPageBundle
+ *
+ * (c) Zender <azazen09@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+namespace Neutron\Plugin\PageBundle\Entity;
 
 use Neutron\TreeBundle\Model\TreeNodeInterface;
 
 use Neutron\Bundle\FormBundle\Model\ImageInterface;
 
-use Neutron\PageBundle\Model\PageInterface;
+use Neutron\Plugin\PageBundle\Model\PageInterface;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Gedmo\TranslationEntity(class="Neutron\PageBundle\Entity\Translation\PageTranslation")
+ * @Gedmo\TranslationEntity(class="Neutron\Plugin\PageBundle\Entity\Translation\PageTranslation")
  * @ORM\Table(name="neutron_page")
- * @ORM\Entity(repositoryClass="Neutron\PageBundle\Entity\Repository\PageRepository")
+ * @ORM\Entity(repositoryClass="Neutron\Plugin\PageBundle\Entity\Repository\PageRepository")
  * 
  */
 class Page implements PageInterface

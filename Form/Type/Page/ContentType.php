@@ -1,5 +1,5 @@
-<?php
-namespace Neutron\PageBundle\Form\Type\Page;
+<?php 
+namespace Neutron\Plugin\PageBundle\Form\Type\Page;
 
 use Symfony\Component\Form\FormInterface;
 

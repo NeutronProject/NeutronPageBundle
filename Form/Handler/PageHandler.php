@@ -1,5 +1,5 @@
 <?php
-namespace Neutron\PageBundle\Form\Handler;
+namespace Neutron\Plugin\PageBundle\Form\Handler;
 
 use Neutron\LayoutBundle\Model\LayoutManagerInterface;
 
@@ -13,11 +13,11 @@ use Neutron\TreeBundle\Model\TreeManagerFactoryInterface;
 
 use Neutron\AdminBundle\Acl\AclManagerInterface;
 
-use Neutron\PageBundle\Model\PageManagerInterface;
+use Neutron\Plugin\PageBundle\Model\PageManagerInterface;
 
 use Neutron\ComponentBundle\Form\Handler\FormHandlerInterface;
 
-use Neutron\PageBundle\Model\PageInterface;
+use Neutron\Plugin\PageBundle\Model\PageInterface;
 
 use Neutron\ComponentBundle\Form\Helper\FormHelper;
 

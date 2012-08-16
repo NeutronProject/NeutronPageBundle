@@ -1,5 +1,5 @@
 <?php
-namespace Neutron\PageBundle\Entity\Translation;
+namespace Neutron\Plugin\PageBundle\Entity\Translation;
 
 use Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation;
 

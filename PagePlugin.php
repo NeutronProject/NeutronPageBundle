@@ -1,5 +1,5 @@
 <?php
-namespace Neutron\PageBundle;
+namespace Neutron\Plugin\PageBundle;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 

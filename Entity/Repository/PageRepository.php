@@ -1,5 +1,5 @@
 <?php
-namespace Neutron\PageBundle\Entity\Repository;
+namespace Neutron\Plugin\PageBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository; 
 

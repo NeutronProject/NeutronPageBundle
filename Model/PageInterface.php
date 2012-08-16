@@ -1,5 +1,5 @@
 <?php
-namespace Neutron\PageBundle\Model;
+namespace Neutron\Plugin\PageBundle\Model;
 
 use Neutron\TreeBundle\Model\TreeNodeInterface;
 

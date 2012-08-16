@@ -1,6 +1,6 @@
 <?php
 
-namespace Neutron\PageBundle\DependencyInjection;
+namespace Neutron\Plugin\PageBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
