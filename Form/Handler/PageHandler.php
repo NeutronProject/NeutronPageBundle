@@ -1,6 +1,8 @@
 <?php
 namespace Neutron\PageBundle\Form\Handler;
 
+use Neutron\LayoutBundle\Model\LayoutManagerInterface;
+
 use Symfony\Component\Translation\TranslatorInterface;
 
 use Doctrine\ORM\EntityManager;
@@ -38,13 +40,14 @@ class PageHandler implements FormHandlerInterface
     protected $formHelper;
     protected $pageManager;
     protected $aclManager;
+    protected $layoutManager;
     protected $treeManager;
     protected $result;
 
 
     public function __construct(EntityManager $em, Form $form, FormHelper $formHelper, Request $request, Router $router, 
             TranslatorInterface $translator, PageManagerInterface $pageManager, AclManagerInterface $aclManager, 
-            TreeManagerFactoryInterface $treeManager, $treeClass)
+            LayoutManagerInterface $layoutManager, TreeManagerFactoryInterface $treeManager, $treeClass)
     {
         $this->em = $em;
         $this->form = $form;
@@ -54,6 +57,7 @@ class PageHandler implements FormHandlerInterface
         $this->translator = $translator;
         $this->pageManager = $pageManager;
         $this->aclManager = $aclManager;
+        $this->layoutManager = $layoutManager;
         $this->treeManager = $treeManager->getManagerForClass($treeClass);
     }
 
@@ -67,9 +71,17 @@ class PageHandler implements FormHandlerInterface
                 
                 $this->onSucess();
             
+                
+                $this->request->getSession()
+                    ->getFlashBag()->add('neutron.form.success', array(
+                        'type' => 'success',
+                        'body' => $this->translator->trans('page.flash.updated', array(), 'NeutronPageBundle')
+                    ));
+                
                 $this->result = array(
                     'success' => true,
-                    'successMsg' => $this->translator->trans('form.success', array(), 'NeutronPageBundle')
+                    'redirect_uri' => 
+                        $this->router->generate('neutron_page.page', array('id' => $this->request->get('id')))
                 );
                 
                 return true;
@@ -91,16 +103,19 @@ class PageHandler implements FormHandlerInterface
         $pageManager = $this->pageManager;
         $treeManager = $this->treeManager;
         $aclManager = $this->aclManager;
+        $layoutManager = $this->layoutManager;
         
         $node = $this->form->get('general')->getData();
         $page = $this->form->get('content')->getData();
+        $panels = $this->form->get('panels')->getData();
         $acl = $this->form->get('acl')->getData();
         
         $this->em->transactional(function(EntityManager $em)
-                use ($pageManager, $treeManager, $aclManager, $node, $page, $acl){
+                use ($pageManager, $treeManager, $aclManager, $layoutManager, $node, $page, $panels, $acl){
         
             $pageManager->updatePage($page);
             $treeManager->updateNode($node);
+            $layoutManager->updatePanels($panels);
             $aclManager
                 ->setObjectPermissions(ObjectIdentity::fromDomainObject($node), $acl);
         });

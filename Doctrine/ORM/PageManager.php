@@ -33,11 +33,9 @@ class PageManager implements PageManagerInterface
         $class = $this->class;
         $entity = new $class();
         $entity->setCategory($category);
-        $image = $entity->getPageImage();
         
-        if ($image){
-            $this->em->persist($image);
-        }
+        $this->em->persist($entity);
+        $this->em->flush();
         
         return $entity;
     }
@@ -49,7 +47,7 @@ class PageManager implements PageManagerInterface
         if ($image){
             $this->em->persist($image);
         }
-        $this->em->persist($page);
+
         $this->em->flush();
     }
     

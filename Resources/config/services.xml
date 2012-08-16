@@ -17,10 +17,20 @@
     </parameters>
 
     <services>
-    
+
         <service id="neutron_page.plugin" class="%neutron_page.plugin.class%">
-        	<argument type="service" id="router" />
-        	<argument type="service" id="translator" />
+            <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="neutron_layout.plugin.factory" />
+            <argument type="service" id="router" />
+            <argument type="service" id="translator" />
+        </service>
+        
+        
+        <service id="neutron_plugin_page.factory" 
+        	class="Neutron\LayoutBundle\Plugin\PluginFactory"
+        	factory-service="neutron_page.plugin"
+        	factory-method="create"
+        >
             <tag name="neutron.plugin" alias="neutron.plugin.page"/>
         </service>
         
@@ -29,39 +39,39 @@
         </service>
 
 	
-		<service id="neutron_page.controller.page.default" class="%neutron_page.controller.page.default.class%">
-		    <call method="setContainer">
-		        <argument type="service" id="service_container" />
-		    </call>
-		</service>
+        <service id="neutron_page.controller.page.default" class="%neutron_page.controller.page.default.class%">
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
 		
-		<service id="neutron_page.manager.page.default" class="%neutron_page.manager.page.default.class%">
+        <service id="neutron_page.manager.page.default" class="%neutron_page.manager.page.default.class%">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument>%neutron_page.page_class%</argument>
         </service>
         
-		<service id="neutron_page.page.form" factory-method="createNamed" factory-service="form.factory" class="Symfony\Component\Form\Form">
+	<service id="neutron_page.page.form" factory-method="createNamed" factory-service="form.factory" class="Symfony\Component\Form\Form">
             <argument>%neutron_page.page.form.name%</argument>
             <argument>%neutron_page.form.type.page%</argument>
         </service>
         
-        <service id="neutron_page.form.type.page" class="%neutron_page.form.type.page.class%">
-			<tag name="form.type" alias="neutron_page_form_page" />
+        <service id="neutron_page.form.type.page" class="%neutron_page.form.type.page.class%" scope="request">
+            <argument type="service" id="request" />
+            <tag name="form.type" alias="neutron_page_form_page" />
         </service>
-        
         		
-		<service id="neutron_page.form.type.page.content" class="%neutron_page.form.type.page.content.class%">
-		    <argument>%neutron_page.page_class%</argument>
+	<service id="neutron_page.form.type.page.content" class="%neutron_page.form.type.page.content.class%">
+            <argument>%neutron_page.page_class%</argument>
             <argument>%neutron_page.page_image_class%</argument>
             <argument>%neutron_page.templates%</argument>
             <argument>%neutron_page.media%</argument>
-		    <tag name="form.type" alias="neutron_page_form_type_page_content" />
-		</service>
+            <tag name="form.type" alias="neutron_page_form_type_page_content" />
+	</service>
 		
-		<service id="neutron_page.form.handler.page.default" 
-			class="%neutron_page.form.handler.page.default.class%" 
-			scope="request" 
-			public="false">
+	<service id="neutron_page.form.handler.page.default" 
+            class="%neutron_page.form.handler.page.default.class%" 
+            scope="request" 
+            public="false">
 			
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="neutron_page.page.form" />
@@ -71,8 +81,9 @@
             <argument type="service" id="translator" />
             <argument type="service" id="neutron_page.manager.page" />
             <argument type="service" id="neutron_admin.acl.manager" />
+            <argument type="service" id="neutron_page.layout_manager" />
             <argument type="service" id="neutron_tree.manager.factory" />
-			<argument>%neutron_admin.category.tree_data_class%</argument>
+            <argument>%neutron_admin.category.tree_data_class%</argument>
         </service>
 
     	<service id="neutron_page.doctrine.event_subscriber.category" class="%neutron_page.doctrine.event_subscriber.category.class%">
@@ -80,7 +91,13 @@
             <argument>%neutron_page.page_class%</argument>
             <tag name="doctrine.event_subscriber" connection="default" />
         </service>
+        
+    	<service id="neutron_page.layout_manager" parent="neutron_layout.layout_manager">
+            <call method="setPlugin">
+                <argument type="service" id="neutron_plugin_page.factory" />
+            </call> 
+        </service>
 	
-	</services>
+    </services>
 	
 </container>

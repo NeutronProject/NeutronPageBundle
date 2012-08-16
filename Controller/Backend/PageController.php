@@ -19,10 +19,12 @@ use Symfony\Component\DependencyInjection\ContainerAware;
 
 class PageController extends ContainerAware
 {
+    
     public function indexAction($id)
     {   
         $category = $this->getCategory($id);
         $page = $this->getPage($category);
+        $panels = $this->container->get('neutron_page.layout_manager')->getPanels($id);
         
         $form = $this->container->get('neutron_page.page.form');
         $handler = $this->container->get('neutron_page.page.form.handler');
@@ -30,11 +32,11 @@ class PageController extends ContainerAware
         $form->setData(array(
             'general' => $category, 
             'content' => $page, 
+            'panels' => $panels,
             'acl' => $this->container->get('neutron_admin.acl.manager')
                 ->getPermissions(ObjectIdentity::fromDomainObject($category))));
         
-        if (null !== $handler->process()){
-            
+        if (null !== $handler->process()){         
             return new Response(json_encode($handler->getResult()));
         }
     
@@ -72,4 +74,5 @@ class PageController extends ContainerAware
 
         return $page;
     }
+    
 }

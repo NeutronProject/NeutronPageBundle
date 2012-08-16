@@ -1,43 +1,81 @@
 <?php
 namespace Neutron\PageBundle;
 
+use Symfony\Component\EventDispatcher\EventDispatcher;
+
+use Neutron\LayoutBundle\Plugin\PluginFactoryInterface;
+
 use Symfony\Component\Translation\TranslatorInterface;
 
 use Symfony\Component\Routing\RouterInterface;
 
-use Neutron\PluginBundle\Plugin\AbstractPlugin;
+use Neutron\LayoutBundle\LayoutEvents;
 
-class PagePlugin extends AbstractPlugin
+use Neutron\LayoutBundle\Event\ConfigurePluginEvent;
+
+class PagePlugin
 {
+    protected $dispatcher;
+    
+    protected $factory;
     
     protected $router;
     
     protected $translator;
     
-    public function __construct(RouterInterface $router, TranslatorInterface $translator)
+    public function __construct(EventDispatcher $dispatcher, PluginFactoryInterface $factory, RouterInterface $router, TranslatorInterface $translator)
     {
+        $this->dispatcher = $dispatcher;
+        $this->factory = $factory;
         $this->router = $router;
         $this->translator = $translator;
         
-        parent::__construct();
+    }
+    
+    public function create()
+    {
+        $plugin = $this->factory->createPlugin('neutron.plugin.page');
+        $plugin
+            ->setLabel('plugin.page.label')
+            ->setDescription('plugin.page.description')
+            ->setBackendRoute('neutron_page.page')
+            ->setFrontendRoute('neutron_page.page')
+            ->setTreeOptions(array(
+                'children_strategy' => 'self',
+            ))
+            ->addPanel($this->factory->createPanel(
+                'panel_sidebar_left', array(
+                    'label' => 'panel.sidebar.left.label',
+                    'description' => 'panel.sidebar.left.description'
+                )
+            ))
+            ->addPanel($this->factory->createPanel(
+                'panel_sidebar_right', array(
+                    'label' => 'panel.sidebar.right.label',
+                    'description' => 'panel.sidebar.right.description'
+                )
+            ))
+            ->addPanel($this->factory->createPanel(
+                'panel_plugin_above', array(
+                    'label' => 'panel.plugin.above.label',
+                    'description' => 'panel.plugin.above.right.description'
+                )
+            ))
+            ->addPanel($this->factory->createPanel(
+                'panel_plugin_below', array(
+                    'label' => 'panel.plugin.below.label',
+                    'description' => 'panel.plugin.below.right.description'
+                )
+            ))
 
-    }
-    
-    protected function configure()
-    {
-        $this->setOptions(array(
-            'label' => $this->translator->trans('plugin.page', array(), 'NeutronPagePlugin'),
-            'description' => 'some desc',
-            'route' => 'neutron_page.page'
-        ));
+        ;
         
-        $this->setTreeOptions(array(
-            'children_strategy' => 'self',
-        ));
+        $this->dispatcher->dispatch(
+            LayoutEvents::onPluginConfigure, 
+            new ConfigurePluginEvent($this->factory, $plugin)
+        );
+        
+        return $plugin;
     }
     
-    public function getName()
-    {
-        return 'neutron.plugin.page';
-    }
 }
