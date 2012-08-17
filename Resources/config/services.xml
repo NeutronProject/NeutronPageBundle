@@ -82,8 +82,6 @@
             <argument type="service" id="neutron_page.manager.page" />
             <argument type="service" id="neutron_admin.acl.manager" />
             <argument type="service" id="neutron_page.layout_manager" />
-            <argument type="service" id="neutron_tree.manager.factory" />
-            <argument>%neutron_admin.category.tree_data_class%</argument>
         </service>
 
     	<service id="neutron_page.doctrine.event_subscriber.category" class="%neutron_page.doctrine.event_subscriber.category.class%">

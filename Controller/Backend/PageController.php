@@ -1,6 +1,12 @@
 <?php
 namespace Neutron\Plugin\PageBundle\Controller\Backend;
 
+use Neutron\Plugin\PageBundle\Model\PageInterface;
+
+use Neutron\SeoBundle\Doctrine\ORM\SeoManager;
+
+use Neutron\SeoBundle\Model\SeoInterface;
+
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
 use Neutron\TreeBundle\Model\TreeNodeInterface;
@@ -24,6 +30,7 @@ class PageController extends ContainerAware
     {   
         $category = $this->getCategory($id);
         $page = $this->getPage($category);
+        $seo = $this->getSeo($page);
         $panels = $this->container->get('neutron_page.layout_manager')->getPanels($id);
         
         $form = $this->container->get('neutron_page.page.form');
@@ -32,7 +39,8 @@ class PageController extends ContainerAware
         $form->setData(array(
             'general' => $category, 
             'content' => $page, 
-            'panels' => $panels,
+            'seo'     => $seo,
+            'panels'  => $panels,
             'acl' => $this->container->get('neutron_admin.acl.manager')
                 ->getPermissions(ObjectIdentity::fromDomainObject($category))));
         
@@ -73,6 +81,18 @@ class PageController extends ContainerAware
         }
 
         return $page;
+    }
+    
+    private function getSeo(PageInterface $page)
+    {
+        
+        if(!$page->getSeo() instanceof SeoInterface){
+            $manager = $this->container->get('neutron_seo.manager');
+            $seo = $manager->createSeo();
+            $page->setSeo($seo);
+        } 
+        
+        return $page->getSeo();
     }
     
 }

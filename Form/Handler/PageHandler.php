@@ -33,21 +33,29 @@ class PageHandler implements FormHandlerInterface
 {
     
     protected $em;
+    
     protected $request;
+    
     protected $router;
+    
     protected $translator;
+    
     protected $form;
+    
     protected $formHelper;
+    
     protected $pageManager;
+    
     protected $aclManager;
+    
     protected $layoutManager;
-    protected $treeManager;
+    
     protected $result;
 
 
     public function __construct(EntityManager $em, Form $form, FormHelper $formHelper, Request $request, Router $router, 
             TranslatorInterface $translator, PageManagerInterface $pageManager, AclManagerInterface $aclManager, 
-            LayoutManagerInterface $layoutManager, TreeManagerFactoryInterface $treeManager, $treeClass)
+            LayoutManagerInterface $layoutManager)
     {
         $this->em = $em;
         $this->form = $form;
@@ -58,7 +66,6 @@ class PageHandler implements FormHandlerInterface
         $this->pageManager = $pageManager;
         $this->aclManager = $aclManager;
         $this->layoutManager = $layoutManager;
-        $this->treeManager = $treeManager->getManagerForClass($treeClass);
     }
 
     public function process()
@@ -70,8 +77,7 @@ class PageHandler implements FormHandlerInterface
             if ($this->form->isValid()) {
                 
                 $this->onSucess();
-            
-                
+
                 $this->request->getSession()
                     ->getFlashBag()->add('neutron.form.success', array(
                         'type' => 'success',
@@ -101,7 +107,6 @@ class PageHandler implements FormHandlerInterface
     protected function onSucess()
     {
         $pageManager = $this->pageManager;
-        $treeManager = $this->treeManager;
         $aclManager = $this->aclManager;
         $layoutManager = $this->layoutManager;
         
@@ -111,10 +116,9 @@ class PageHandler implements FormHandlerInterface
         $acl = $this->form->get('acl')->getData();
         
         $this->em->transactional(function(EntityManager $em)
-                use ($pageManager, $treeManager, $aclManager, $layoutManager, $node, $page, $panels, $acl){
+                use ($pageManager, $aclManager, $layoutManager, $node, $page, $panels, $acl){
         
             $pageManager->updatePage($page);
-            $treeManager->updateNode($node);
             $layoutManager->updatePanels($panels);
             $aclManager
                 ->setObjectPermissions(ObjectIdentity::fromDomainObject($node), $acl);

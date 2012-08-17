@@ -22,6 +22,7 @@ class PageType extends AbstractType
     {
         $builder->add('general', 'neutron_admin_form_category');
         $builder->add('content', 'neutron_page_form_type_page_content');
+        $builder->add('seo', 'neutron_seo');
         $builder->add('panels', 'neutron_layout', array(
             'plugin' => 'neutron.plugin.page',
             'category' => (int) $this->request->get('id')

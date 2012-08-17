@@ -9,6 +9,8 @@
  */
 namespace Neutron\Plugin\PageBundle\Entity;
 
+use Neutron\SeoBundle\Model\SeoInterface;
+
 use Neutron\TreeBundle\Model\TreeNodeInterface;
 
 use Neutron\Bundle\FormBundle\Model\ImageInterface;
@@ -38,6 +40,7 @@ class Page implements PageInterface
     
     /**
      * @var string 
+     * 
      * @Gedmo\Translatable
      * @ORM\Column(type="string", name="title", length=255, nullable=true, unique=false)
      */
@@ -58,6 +61,13 @@ class Page implements PageInterface
     protected $template;
     
     /**
+     * @Gedmo\Locale
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     */
+    private $locale;
+    
+    /**
      * @ORM\OneToOne(targetEntity="PageImage", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
      */
     protected $pageImage;
@@ -67,6 +77,12 @@ class Page implements PageInterface
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     protected $category;
+    
+    /**
+     * @ORM\OneToOne(targetEntity="Neutron\SeoBundle\Entity\Seo", cascade={"all"}, orphanRemoval=true)
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     */
+    protected $seo;
     
     public function getId()
     {
@@ -106,6 +122,11 @@ class Page implements PageInterface
         return $this->template;
     }
     
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+    
     public function setPageImage(ImageInterface $image)
     {
         $this->pageImage = $image;
@@ -126,5 +147,16 @@ class Page implements PageInterface
     public function getCategory()
     {
         return $this->category;
+    }
+    
+    public function setSeo(SeoInterface $seo)
+    {
+        $this->seo = $seo;
+        return $this;
+    }
+    
+    public function getSeo()
+    {
+        return $this->seo;
     }
 }
