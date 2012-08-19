@@ -1,42 +1,41 @@
 <?php 
 namespace Neutron\Plugin\PageBundle\EventListener;
 
-use Knp\Menu\FactoryInterface;
+use Neutron\LayoutBundle\Plugin\PluginInterface;
 
-use Knp\Menu\ItemInterface;
+use Knp\Menu\FactoryInterface;
 
 use Neutron\AdminBundle\Event\ConfigureMenuEvent;
 
 class MainMenuListener
 {
    
+    protected $plugin;
+    
+    public function __construct(PluginInterface $plugin)
+    {
+        $this->plugin = $plugin;
+    }
+    
     public function onMenuConfigure(ConfigureMenuEvent $event)
     {
         $menu = $event->getMenu();
         $factory = $event->getFactory();
         
-        $root = $menu->getRoot();
         
-        $pageManagement = $factory->createItem('page_management', array(
-            'label' => 'menu.page_management',
-            'uri' => 'javascript;',
-            'attributes' => array(
-                'class' => 'dropdown',
-            ),
-            'childrenAttributes' => array(
-                'class' => 'menu',
-            ),
+        $plugins = $menu->getRoot()->getChild('plugins');
+        
+        $plugins->addChild($this->plugin->getName(), array(
+            'label' => $this->plugin->getLabel(),
+            'route' => $this->plugin->getAdministrationRoute(),
             'extras' => array(
-                'safe_label' => true,
-                'breadcrumbs' => false,
+                'breadcrumbs' => true,
                 'translation_domain' => 'NeutronPageBundle'
             ),
         ));
         
-        $root->addChild($pageManagement);
-        $pageManagement->moveToPosition(2);
-        
-        
+
     }
+
     
 }

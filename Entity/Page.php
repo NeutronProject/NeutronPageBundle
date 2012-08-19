@@ -73,13 +73,12 @@ class Page implements PageInterface
     protected $pageImage;
     
     /**
-     * @ORM\OneToOne(targetEntity="Neutron\TreeBundle\Model\TreeNodeInterface")
-     * @ORM\JoinColumn(onDelete="SET NULL")
+     * @ORM\OneToOne(targetEntity="Neutron\TreeBundle\Model\TreeNodeInterface", cascade={"all"}, orphanRemoval=true) 
      */
     protected $category;
     
     /**
-     * @ORM\OneToOne(targetEntity="Neutron\SeoBundle\Entity\Seo", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="Neutron\SeoBundle\Entity\Seo", cascade={"persist"})
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     protected $seo;

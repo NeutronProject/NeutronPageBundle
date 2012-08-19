@@ -87,7 +87,7 @@ class PageHandler implements FormHandlerInterface
                 $this->result = array(
                     'success' => true,
                     'redirect_uri' => 
-                        $this->router->generate('neutron_page.page', array('id' => $this->request->get('id')))
+                        $this->router->generate('neutron_page.administration')
                 );
                 
                 return true;

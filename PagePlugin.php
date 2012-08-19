@@ -40,6 +40,8 @@ class PagePlugin
             ->setDescription('plugin.page.description')
             ->setBackendRoute('neutron_page.page')
             ->setFrontendRoute('neutron_page.page')
+            ->setAdministrationRoute('neutron_page.administration')
+            ->setDeleteRoute('neutron_page.delete')
             ->setTreeOptions(array(
                 'children_strategy' => 'self',
             ))

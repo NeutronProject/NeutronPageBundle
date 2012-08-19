@@ -32,7 +32,7 @@ class NeutronPageExtension extends Extension
         $container->setParameter('neutron_page.page_class', $config['page_class']);
         $container->setParameter('neutron_page.page_image_class', $config['page_image_class']);
         $container->setAlias('neutron_page.controller.page', $config['page_controller']);
-        $container->setAlias('neutron_page.manager.page', $config['page_manager']);
+        $container->setAlias('neutron_page.manager', $config['page_manager']);
         
         
         $container->setParameter('neutron_page.templates', $config['templates']);

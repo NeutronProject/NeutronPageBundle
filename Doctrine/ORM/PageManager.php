@@ -27,6 +27,7 @@ class PageManager implements PageManagerInterface
         $this->class = $metadata->name;
     }
     
+
     
     public function createPage(TreeNodeInterface $category)
     {

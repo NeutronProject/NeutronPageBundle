@@ -1,6 +1,12 @@
 <?php
 namespace Neutron\Plugin\PageBundle\Controller\Backend;
 
+use Symfony\Component\HttpFoundation\Request;
+
+use Symfony\Component\Routing\Router;
+
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
 use Neutron\Plugin\PageBundle\Model\PageInterface;
 
 use Neutron\SeoBundle\Doctrine\ORM\SeoManager;
@@ -26,7 +32,19 @@ use Symfony\Component\DependencyInjection\ContainerAware;
 class PageController extends ContainerAware
 {
     
-    public function indexAction($id)
+    public function indexAction()
+    {
+        $grid = $this->container->get('neutron.datagrid')->get('page_management');
+    
+        $template = $this->container->get('templating')
+            ->render('NeutronPageBundle:Backend\Page:index.html.twig', array(
+                'grid' => $grid
+            ));
+    
+        return  new Response($template);
+    }
+    
+    public function updateAction($id)
     {   
         $category = $this->getCategory($id);
         $page = $this->getPage($category);
@@ -47,16 +65,54 @@ class PageController extends ContainerAware
         if (null !== $handler->process()){         
             return new Response(json_encode($handler->getResult()));
         }
+        
     
         $template = $this->container->get('templating')
-            ->render('NeutronPageBundle:Backend\Page:index.html.twig', array(
-                'form' => $form->createView()
+            ->render('NeutronPageBundle:Backend\Page:update.html.twig', array(
+                'form' => $form->createView(),
             ));
         
         return  new Response($template);
     }
     
-    private function getCategory($id)
+    public function deleteAction($id)
+    {   
+        $category = $this->getCategory($id);
+        $page = $this->getPage($category);
+
+        if (!$page instanceof PageInterface){
+            throw new NotFoundHttpException();
+        }
+        
+        if ($this->container->get('request')->getMethod() == 'POST'){
+            $this->doDelete($category, $page);
+            $redirectUrl = $this->container->get('router')->generate('neutron_page.administration');
+            return new RedirectResponse($redirectUrl);
+        }
+
+        $template = $this->container->get('templating')
+            ->render('NeutronPageBundle:Backend\Page:delete.html.twig', array(
+                'record' => $page,
+            ));
+        
+        return  new Response($template);
+        
+    }
+    
+    protected function doDelete(TreeNodeInterface $category, PageInterface $page)
+    {       
+        $pageManager = $this->container->get('neutron_page.manager');
+        $aclManager = $this->container->get('neutron_admin.acl.manager');
+        
+        $em = $this->container->get('doctrine.orm.entity_manager');
+        
+        $em->transactional(function(EntityManager $em) use ($pageManager, $aclManager, $page){
+            $aclManager->deleteObjectPermissions(ObjectIdentity::fromDomainObject($page->getCategory()));
+            $pageManager->deletePage($page);
+        });
+    }
+    
+    protected function getCategory($id)
     {
         $treeManager = $this->container->get('neutron_tree.manager.factory')
             ->getManagerForClass($this->container->getParameter('neutron_admin.category.tree_data_class'));
@@ -70,9 +126,9 @@ class PageController extends ContainerAware
         return $category;
     }
     
-    private function getPage(TreeNodeInterface $category)
+    protected function getPage(TreeNodeInterface $category)
     {
-        $pageManager = $this->container->get('neutron_page.manager.page');
+        $pageManager = $this->container->get('neutron_page.manager');
         
         $page = $pageManager->findPageBy(array('category' => $category));
         
@@ -83,7 +139,7 @@ class PageController extends ContainerAware
         return $page;
     }
     
-    private function getSeo(PageInterface $page)
+    protected function getSeo(PageInterface $page)
     {
         
         if(!$page->getSeo() instanceof SeoInterface){

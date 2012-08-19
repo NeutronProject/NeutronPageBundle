@@ -1,0 +1,47 @@
+{% extends "NeutronAdminBundle::layout.html.twig" %}
+{% block body %}
+<div class="row">
+	<div class="grid12">
+		<article class="panel">
+		 	<header><h2>Headings</h2></header>
+		 	
+            <table class="table">
+                <tbody>
+                	<tr>
+                		<td><strong>{{ 'form.title'|trans({}, 'NeutronPageBundle') }}</strong></td>
+                		<td class="actions">{{ record.title }}</td>
+                	</tr>
+             
+                	<tr>
+                		<td><strong>{{ 'form.slug'|trans({}, 'NeutronAdminBundle') }}</strong></td>
+                		<td class="actions">{{ record.category.slug }}</td>
+                    </tr>
+   
+                	<tr>
+                		<td><strong>{{ 'form.enabled'|trans({}, 'NeutronAdminBundle') }}</strong></td>
+                		<td class="actions">{{ record.category.enabled|yes_no }}</td>
+                    </tr>
+                    
+                	<tr>
+                		<td><strong>{{ 'form.displayed'|trans({}, 'NeutronAdminBundle') }}</strong></td>
+                		<td class="actions">{{ record.category.displayed|yes_no }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div style="clear:both"></div>
+            
+            <div class="actions">
+                <div class="controls">
+                    <form action="{{ path('neutron_page.delete', {'id': app.request.get('id')}) }}" method="POST">
+                        <button type="submit"  style="float:right; margin:5px;" type="submit" class="btn" name="operation" value="delete">{{ 'page.delete'|trans({}, 'NeutronAdminBundle') }}</button>
+                        <a href="{{ path('neutron_page.administration') }}" style="float:right; margin:5px;" class="btn action" >{{ 'page.management.back'|trans({}, 'NeutronPageBundle') }}</a>
+                        <a href="{{ path('neutron_admin.category.management') }}" style="float:right; margin:5px;" class="btn action" >{{ 'category.management.back'|trans({}, 'NeutronAdminBundle') }}</a>
+                    </form>   
+                </div>
+            </div> 	
+		</article>
+
+	</div>
+</div>
+{% endblock %}

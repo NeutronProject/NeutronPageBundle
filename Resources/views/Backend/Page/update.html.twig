@@ -15,12 +15,14 @@
 		 	<header class="divider">
 		 	    <h2>{% trans from "NeutronUserBundle" %}subheader{% endtrans %}</h2>
 		 	</header>
-		 	<div id="messages">
-		 	    {% for flashMessage in app.session.flashbag.get('neutron.form.success') %}
-		 	        <div class="msg {{ flashMessage.type }}"><p> {{ flashMessage.body }}  </p><a class="close">×</a></div>
-		 	    {% endfor %}	
-		 	</div>
-            {{ neutron_datagrid(grid) }}
+            {{ neutron_form_tabs(
+                  form, 
+                {'submit_label': 'form.save', 'translation_domain': 'NeutronPageBundle'},
+                {
+                    'back_administration': {'label': 'form.back_administration', 'style': 'btn action', 'url': path('neutron_page.administration')},
+                    'back_category': {'label': 'form.back_category', 'style': 'btn action', 'url': path('neutron_admin.category.management')},
+                }
+           ) }}
 		</article>
 
 	</div>

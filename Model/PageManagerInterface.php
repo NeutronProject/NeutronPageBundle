@@ -1,11 +1,13 @@
 <?php
 namespace Neutron\Plugin\PageBundle\Model;
 
+use Neutron\LayoutBundle\Model\Plugin\PluginManagerInterface;
+
 use Neutron\TreeBundle\Model\TreeNodeInterface;
 
 use Neutron\Bundle\FormBundle\Model\ImageInterface;
 
-interface PageManagerInterface
+interface PageManagerInterface extends  PluginManagerInterface
 {
     public function createPage(TreeNodeInterface $category);
     
