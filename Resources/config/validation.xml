@@ -7,6 +7,29 @@
     <class name="Neutron\Plugin\PageBundle\Entity\Page">   
 
 	     
+        <property name="headingText">
+        	<constraint name="NotBlank">
+                <option name="message">headingText.blank</option>
+                <option name="groups">
+                    <value>page</value>
+                </option>
+            </constraint>
+            <constraint name="MinLength">
+                <option name="limit">2</option>
+                <option name="message">headingText.short</option>
+                <option name="groups">
+                    <value>page</value>
+                </option>
+            </constraint>
+            <constraint name="MaxLength">
+                <option name="limit">255</option>
+                <option name="message">headingText.long</option>
+                <option name="groups">
+                    <value>page</value>
+                </option>
+            </constraint>
+        </property>
+	     
         <property name="title">
         	<constraint name="NotBlank">
                 <option name="message">title.blank</option>
@@ -34,7 +57,7 @@
         	<constraint name="Neutron\Bundle\FormBundle\Validator\Constraint\Image">
                 <option name="requiredMessage">image.blank</option>
                 <option name="groups">
-                    <value>page</value>
+                    <value>none</value>
                 </option>
             </constraint>
         </property>

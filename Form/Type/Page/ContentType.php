@@ -34,6 +34,10 @@ class ContentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options) 
     {
         $builder
+           ->add('headingText', 'text', array(
+               'label' => 'form.headingText',
+               'translation_domain' => 'NeutronPageBundle'
+           ))
            ->add('title', 'text', array(
                'label' => 'form.title',
                'translation_domain' => 'NeutronPageBundle'

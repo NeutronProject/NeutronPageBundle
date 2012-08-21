@@ -1,0 +1,146 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
+        <meta name="robots" content="{{ neutron_settings_get('robots') }}" />
+        <meta name="Author" content="{{ neutron_settings_get('author') }}" />
+        <meta name="Language" content="{{ app.request.locale }}"/>
+        <meta name="Copyright" content="{{ neutron_settings_get('copyright') }}" />
+        <meta name="Publisher" content="{{ neutron_settings_get('publisher') }}" />
+        <meta name="Description" content=" {% block meta_description %}{{ neutron_seo_description() }}{% endblock %} " />
+        <meta name="Keywords" content="{% block meta_keywords %}{{ neutron_seo_keywords() }}{% endblock %} " />
+        
+        <title>{% block meta_title %}{{ neutron_seo_title() }}{% endblock %}</title>
+        {% block stylesheets %}
+            {{ neutron_prepend_stylesheet('bundles/neutronpage/css/primary-blue.css') }}
+            {{ neutron_prepend_stylesheet('bundles/neutronpage/css/_mobile.css') }}
+            {{ neutron_prepend_stylesheet('bundles/neutronpage/css/_style.css') }}
+
+            {{ neutron_stylesheet_render() }} 
+            
+            <!--[if lt IE 9]>
+                <link rel="stylesheet" href="{{ site_url }}bundles/neutronpage/css/IE.css" />
+            <![endif]-->
+        {% endblock %}
+        
+        {% block javascripts %}
+
+            {{ neutron_prepend_javascript('jquery/js/jquery.js') }}
+            {{ neutron_append_javascript('bundles/neutronpage/js/custom-main.js') }}
+            
+            {{ neutron_javascript_render() }}
+
+            <!--[if lt IE 9]>
+                <link rel="stylesheet" href="{{ site_url }}bundles/neutronpage/css/IE.css" />
+            <![endif]-->
+            <!--[if lte IE 8]>
+                <script type="text/javascript" src="{{ site_url }}bundles/neutronpage/js/IE.js"></script>
+            <![endif]-->
+
+        {% endblock %}
+    </head>
+   <body>
+      <!-- START Top-Toolbar -->
+      <aside class="top-aside clearfix">
+         <div class="center-wrap">
+            <div class="one_half">
+               <div class="sidebar-widget">
+                  <ul class="custom-menu">
+                     <li><a href="page-template-homepage-jquery.html">Home</a></li>
+                     <li><a href="page-template-team-members.html">Team</a></li>
+                     <li><a href="page-template-sitemap.html">Sitemap</a></li>
+                     <li><a href="content-color-autumn.html">Colors</a></li>
+                     <li><a href="page-template-shortcodelist.html">Shortcodes</a></li>
+                     <li><a href="page-template-homepage-lightbox-hero.html">Pages</a></li>
+                  </ul>
+               </div>
+            </div>
+            <!-- END top-toolbar-left -->
+            <div class="one_half">
+               <div class="sidebar-widget">
+                  <ul class="social_icons">
+                     <li><a href="../Sterling/feed" class="rss">RSS</a></li>
+                     <li><a href="http://www.twitter.com/truethemes" class="twitter">Twitter</a></li>
+                     <li><a href="http://www.facebook.com/truethemes" class="facebook">Facebook</a></li>
+                     <li><a href="mailto:themes@truethemes.net" class="email">Email</a></li>
+                  </ul>
+               </div>
+            </div>
+            <!-- END top-toolbar-right -->
+         </div>
+         <!-- END center-wrap -->
+         <div class="top-aside-shadow"></div>
+      </aside>
+      <!-- END Top-Toolbar -->
+      
+      
+      
+      
+      <!-- START Header -->
+      {% block header %}
+          {% include 'NeutronPageBundle:Frontend/Layout:header.html.twig' %}
+      {% endblock %}
+        
+      <!-- END Header -->
+
+<!-- START small_banner -->
+<section class="small_banner">
+   <div class="center-wrap">
+      <p class="page-banner-heading">{% block page_banner_heading %}Default heading{% endblock %}</p>
+      <div id="banner-search">
+         <form method="get" class="searchform" action="page-template-blog-post.html#">
+            <fieldset>
+               <input type="text" name="s" class="s" value="Search..."  />
+            </fieldset>
+         </form>
+      </div>
+      <!-- END banner-search -->
+      
+      <div class="breadcrumbs">
+      <a href="page-template-homepage-jquery.html">Home</a> &rarr; <a href="page-template-blog.html">Blog</a> &rarr; <span class="current_crumb">TrueThemes &#8211; Premium Web Templates</span>
+      </div>
+      <!-- END breadcrumbs -->
+   </div>
+   <!-- END center-wrap -->
+   
+   <div class="shadow top"></div>
+   <div class="shadow bottom"></div>
+   <div class="tt-overlay"></div>
+</section>
+
+ <section id="content-container" class="clearfix">
+   <div id="main-wrap" class="clearfix">
+
+      {% block content %}Page Plugin content{% endblock %}
+      
+      {% block right_sidebar %}
+          {% include 'NeutronPageBundle:Frontend/Layout:right_sidebar.html.twig' %}
+      {% endblock %}
+
+   </div>
+</section>
+
+
+      <!-- START Footer Callout -->
+      <div class="footer-callout clearfix">
+         <div class="center-wrap tt-relative">
+            <div class="footer-callout-content">
+               <p class="callout-heading">Site-wide callout section</p>
+               <p class="callout-text">Engage your customers and promote a rewarding call-to-action. Easily toggle this on or off.</p>
+            </div>
+            <!-- END footer-callout-content -->
+            <div class="footer-callout-button">
+               <a href="content-responsive-design.html" class="large green button">View Theme Features &rarr;</a>
+            </div>
+            <!-- END footer-callout-button -->
+         </div>
+         <!-- END center-wrap --> 
+      </div>
+      <!-- END Footer Callout -->
+      
+      {% block footer %}
+          {% include 'NeutronPageBundle:Frontend/Layout:footer.html.twig' %}
+      {% endblock %}
+   </body>
+</html>

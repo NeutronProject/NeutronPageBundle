@@ -40,6 +40,13 @@ class Page implements PageInterface
     
     /**
      * @var string 
+     *
+     * @ORM\Column(type="string", name="heading_text", length=255, nullable=true, unique=false)
+     */
+    protected $headingText;
+    
+    /**
+     * @var string 
      * 
      * @Gedmo\Translatable
      * @ORM\Column(type="string", name="title", length=255, nullable=true, unique=false)
@@ -86,6 +93,17 @@ class Page implements PageInterface
     public function getId()
     {
         return $this->id;
+    }
+    
+    public function setHeadingText($text)
+    {
+        $this->headingText = (string) $text;
+        return $this;
+    }
+    
+    public function getHeadingText()
+    {
+        return $this->headingText;
     }
     
     public function setTitle($title)

@@ -1,0 +1,26 @@
+{% extends "NeutronPageBundle:Frontend/Layout:layout.html.twig" %}
+
+{% block meta_title %}{{ neutron_seo_title(page.seo) }}{% endblock %}
+{% block meta_keywords %}{{ neutron_seo_keywords(page.seo) }}{% endblock %}
+{% block meta_description %}{{ neutron_seo_description(page.seo) }}{% endblock %}
+
+{% block page_banner_heading %} {{ page.headingText }} {% endblock %}
+
+{% block content %}
+<div class="page_content">
+ <div>
+    <article>
+       <h2>{{ page.title }}</h2>
+
+       {% if(page.pageImage and page.pageImage.isActive == true) %}
+           <div class="img-frame blog-frame">
+               {{ neutron_image(page.pageImage, 'PageImage_thumb') }}
+           </div>
+       {% endif %}
+       
+       {{ page.content|raw }}
+                      
+    </article>
+ </div>		
+</div>
+{% endblock %}
