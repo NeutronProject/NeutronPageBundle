@@ -99,7 +99,9 @@
         	<argument type="service" id="doctrine.orm.entity_manager" />
         	<argument type="service" id="translator" />
         	<argument type="service" id="router" />
+        	<argument type="service" id="session" />
         	<argument>%neutron_page.page_class%</argument>
+        	<argument>%locale%</argument>
         </service>
         
         <service id="neutron_page.datagrid.factory.page_management" 

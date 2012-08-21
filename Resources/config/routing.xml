@@ -4,24 +4,23 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
+    <route id="neutron_page.distributor" pattern="/{slug}">
+        <default key="_controller">NeutronPageBundle:Frontend\Distributor:distribute</default>
+        <requirement key="_method">GET|POST</requirement>
+    </route>
     
     <route id="neutron_page.administration" pattern="/admin/page-management">
         <default key="_controller">neutron_page.controller.page:indexAction</default>
         <requirement key="_method">GET|POST</requirement>
     </route>
 
-    <route id="neutron_page.page" pattern="/admin/page-management/update/{id}">
+    <route id="neutron_page.update" pattern="/admin/page-management/update/{id}">
         <default key="_controller">neutron_page.controller.page:updateAction</default>
         <requirement key="_method">GET|POST</requirement>
     </route>
 
     <route id="neutron_page.delete" pattern="/admin/page/delete/{id}">
         <default key="_controller">neutron_page.controller.page:deleteAction</default>
-        <requirement key="_method">GET|POST</requirement>
-    </route>
-    
-    <route id="neutron_page.front" pattern="/page">
-        <default key="_controller">NeutronPageBundle:Frontend\Page:index</default>
         <requirement key="_method">GET|POST</requirement>
     </route>
     

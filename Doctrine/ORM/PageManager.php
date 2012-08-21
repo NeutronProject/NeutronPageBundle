@@ -28,7 +28,6 @@ class PageManager implements PageManagerInterface
     }
     
 
-    
     public function createPage(TreeNodeInterface $category)
     {
         $class = $this->class;
@@ -61,5 +60,10 @@ class PageManager implements PageManagerInterface
     public function findPageBy(array $criteria)
     {
         return $this->repository->findOneBy($criteria);
+    }
+    
+    public function findByCategoryId($id, $useCache = true, $locale = 'en')
+    { 
+        return $this->repository->findByCategoryId($id, $useCache, $locale);
     }
 }

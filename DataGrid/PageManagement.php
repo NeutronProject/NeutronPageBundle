@@ -1,6 +1,8 @@
 <?php
 namespace Neutron\Plugin\PageBundle\DataGrid;
 
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
 use Doctrine\ORM\Query;
 
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
@@ -25,7 +27,11 @@ class PageManagement
     
     protected $router;
     
+    protected $session;
+    
     protected $pageClass;
+    
+    protected $defaultLocale;
 
     /**
      * 
@@ -33,17 +39,20 @@ class PageManagement
      * @param EntityManager $em
      * @param Translator $translator
      * @param Router $router
+     * @param SessionInterface $session
      * @param string $categoryClass
      * @param string $pageClass
      */
     public function __construct (FactoryInterface $factory, EntityManager $em, 
-            Translator $translator, Router $router, $pageClass)
+            Translator $translator, Router $router, SessionInterface $session, $pageClass, $defaultLocale)
     {
         $this->factory = $factory;
         $this->em = $em;
         $this->translator = $translator;
         $this->router = $router;
+        $this->session = $session;
         $this->pageClass = $pageClass;
+        $this->defaultLocale = $defaultLocale;
     }
 
     public function build ()
@@ -108,11 +117,14 @@ class PageManagement
             ->enableViewRecords(true)
             ->enableSearchButton(true)
             ->enableEditButton(true)
-            ->setEditBtnUri($this->router->generate('neutron_page.page', array('id' => '{c.id}'), true))
+            ->setEditBtnUri($this->router->generate('neutron_page.update', array('id' => '{c.id}'), true))
             ->enableDeleteButton(true)
             ->setDeleteBtnUri($this->router->generate('neutron_page.delete', array('id' => '{c.id}'), true))
             ->setQueryHints(array(
-                Query::HINT_CUSTOM_OUTPUT_WALKER => 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker',
+                Query::HINT_CUSTOM_OUTPUT_WALKER 
+                    => 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker',
+                \Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE 
+                    => $this->session->get('frontend_language', $this->defaultLocale),
             ))
 
             ->setFetchJoinCollection(false)

@@ -9,12 +9,13 @@ use Symfony\Component\HttpFoundation\Response;
 class PageController extends Controller
 {
     
-    public function indexAction()
+    public function indexAction($categoryId)
     {
-        $page = $this->get('neutron_page.manager')->findPageBy(array('id' => 28));
+        $page = $this->get('neutron_page.manager')
+            ->findByCategoryId($categoryId, true, $this->get('request')->getLocale());
         
         $template = $this->get('templating')
-            ->render('NeutronPageBundle:Frontend\Template:right_sidebar.html.twig', array(
+            ->render($page->getTemplate(), array(
                 'page' => $page
             ));
     

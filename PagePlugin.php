@@ -38,9 +38,9 @@ class PagePlugin
         $plugin
             ->setLabel('plugin.page.label')
             ->setDescription('plugin.page.description')
-            ->setBackendRoute('neutron_page.page')
-            ->setFrontendRoute('neutron_page.page')
+            ->setFrontController('NeutronPageBundle:Frontend\Page:index')
             ->setAdministrationRoute('neutron_page.administration')
+            ->setUpdateRoute('neutron_page.update')
             ->setDeleteRoute('neutron_page.delete')
             ->setTreeOptions(array(
                 'children_strategy' => 'self',

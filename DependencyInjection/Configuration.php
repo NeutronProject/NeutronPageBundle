@@ -57,7 +57,9 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
                 ->arrayNode('templates')
-                ->defaultValue(array('standard' => 'template.standard'))
+                ->defaultValue(array(
+                    'NeutronPageBundle:Frontend\Template:right_sidebar.html.twig' => 'template.right_sidebar'
+                ))
                 ->validate()
                     ->ifTrue(function($v){return empty($v);})
                     ->thenInvalid('You should provide at least one template.')
