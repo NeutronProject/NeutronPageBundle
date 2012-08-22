@@ -48,7 +48,7 @@ class DistributorController extends Controller
     {
         $securityContext = $this->get('security.context');
         $user = $securityContext->getToken()->getUser();
-        if ($user != 'anon.' && count(array_intersect($user->getRoles(), BackendRoles::getRoles())) > 0) {
+        if ($user != 'anon.' && count(array_intersect($user->getRoles(), BackendRoles::getAdministrativeRoles())) > 0) {
     	    return true;
     	}
 

@@ -66,14 +66,14 @@
         	<constraint name="NotBlank">
                 <option name="message">content.blank</option>
                 <option name="groups">
-                    <value>page</value>
+                    <value>no_validation</value>
                 </option>
             </constraint>
             <constraint name="MinLength">
                 <option name="limit">10</option>
                 <option name="message">content.short</option>
                 <option name="groups">
-                    <value>page</value>
+                    <value>no_validation</value>
                 </option>
             </constraint>
         </property>

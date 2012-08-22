@@ -1,6 +1,8 @@
 <?php 
 namespace Neutron\Plugin\PageBundle\EventListener;
 
+use Neutron\AdminBundle\Menu\Main;
+
 use Neutron\LayoutBundle\Plugin\PluginInterface;
 
 use Knp\Menu\FactoryInterface;
@@ -19,6 +21,11 @@ class MainMenuListener
     
     public function onMenuConfigure(ConfigureMenuEvent $event)
     {
+        
+        if ($event->getIdentifier() !== Main::IDENTIFIER){
+            return;
+        }
+        
         $menu = $event->getMenu();
         $factory = $event->getFactory();
         

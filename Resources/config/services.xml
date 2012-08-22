@@ -111,8 +111,7 @@
         >
         	<tag name="neutron_data_grid.datagrid" alias="page_management" />
         </service>
-        
-
+       
     </services>
 	
 </container>

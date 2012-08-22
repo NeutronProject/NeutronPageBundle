@@ -76,13 +76,29 @@
       </aside>
       <!-- END Top-Toolbar -->
       
-      
-      
-      
       <!-- START Header -->
-      {% block header %}
-          {% include 'NeutronPageBundle:Frontend/Layout:header.html.twig' %}
-      {% endblock %}
+      <header>
+         <div class="center-wrap">
+            <div class="companyIdentity">
+               <a href="page-template-homepage-jquery.html"><img src="{{ site_url }}content-images/sterling-logo.png" alt="Website Template" /></a>
+            </div>
+            <nav>
+                
+                {% set navigation = knp_menu_get('NeutronPageBundle:Navigation:create') %}
+                {{ 
+                    knp_menu_render(navigation, {
+                    'template': 'NeutronPageBundle:Frontend/Menu:navigation.html.twig',
+                    'depth': 3,
+                    'ancestorClass': 'current-menu-ancestor current-menu-parent',
+                    'currentClass': 'current-menu-item',
+                    'firstClass': '',
+                    'lastClass': '',
+                    'attributes': {'class': 'sub-menu'}
+                  })
+              }}
+            </nav>        
+         </div>
+    </header> 
         
       <!-- END Header -->
 

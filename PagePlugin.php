@@ -42,6 +42,7 @@ class PagePlugin
             ->setAdministrationRoute('neutron_page.administration')
             ->setUpdateRoute('neutron_page.update')
             ->setDeleteRoute('neutron_page.delete')
+            ->setTranslationDomain('NeutronPageBundle')
             ->setTreeOptions(array(
                 'children_strategy' => 'self',
             ))
