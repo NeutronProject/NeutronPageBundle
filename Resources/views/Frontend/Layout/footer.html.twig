@@ -55,13 +55,16 @@
        </div>
        <!-- END foot-copy -->
        <a href="page-template-blog-post.html#" id="scroll_to_top" class="link-top">Scroll to Top</a>
-       <ul class="footer-nav">
-          <li><a href="page-template-homepage-lightbox-hero.html">Pages</a></li>
-          <li><a href="content-responsive-design.html">Features</a></li>
-          <li><a href="content-color-autumn.html">Colors</a></li>
-          <li><a href="page-template-shortcodelist.html">Shortcodes</a></li>
-          <li><a href="page-template-blog.html">Blog</a></li>
-       </ul>
+       {% set menu_footer = knp_menu_get('NeutronPageBundle:Navigation:main', ['menu.footer'])%}
+        {{ 
+            knp_menu_render(menu_footer, {
+            'depth': 1,
+            'ancestorClass': '',
+            'currentClass': 'current-menu-item',
+            'firstClass': '',
+            'lastClass': ''
+          })
+        }} 
     </div>
     <!-- END center-wrap -->
  </div>

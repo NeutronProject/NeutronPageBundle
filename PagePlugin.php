@@ -36,20 +36,19 @@ class PagePlugin
     {
         $plugin = $this->factory->createPlugin('neutron.plugin.page');
         $plugin
-            ->setLabel('plugin.page.label')
-            ->setDescription('plugin.page.description')
+            ->setLabel($this->translator->trans('plugin.page.label', array(), 'NeutronPagePlugin'))
+            ->setDescription($this->translator->trans('plugin.page.description', array(), 'NeutronPagePlugin'))
             ->setFrontController('NeutronPageBundle:Frontend\Page:index')
             ->setAdministrationRoute('neutron_page.administration')
             ->setUpdateRoute('neutron_page.update')
             ->setDeleteRoute('neutron_page.delete')
-            ->setTranslationDomain('NeutronPageBundle')
             ->setTreeOptions(array(
                 'children_strategy' => 'self',
             ))
             ->addPanel($this->factory->createPanel(
                 'panel_sidebar_left', array(
-                    'label' => 'panel.sidebar.left.label',
-                    'description' => 'panel.sidebar.left.description'
+                    'label' => $this->translator->trans('panel.sidebar.left.label', array(), 'NeutronPagePlugin'),
+                    'description' => $this->translator->trans('panel.sidebar.left.description', array(), 'NeutronPagePlugin')
                 )
             ))
             ->addPanel($this->factory->createPanel(

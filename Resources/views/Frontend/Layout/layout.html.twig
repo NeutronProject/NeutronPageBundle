@@ -12,10 +12,11 @@
         <meta name="Keywords" content="{% block meta_keywords %}{{ neutron_seo_keywords() }}{% endblock %} " />
         
         <title>{% block meta_title %}{{ neutron_seo_title() }}{% endblock %}</title>
+        
         {% block stylesheets %}
-            {{ neutron_prepend_stylesheet('bundles/neutronpage/css/primary-blue.css') }}
-            {{ neutron_prepend_stylesheet('bundles/neutronpage/css/_mobile.css') }}
-            {{ neutron_prepend_stylesheet('bundles/neutronpage/css/_style.css') }}
+            {% do neutron_prepend_stylesheet('bundles/neutronpage/css/primary-blue.css') %}
+            {% do neutron_prepend_stylesheet('bundles/neutronpage/css/_mobile.css') %}
+            {% do neutron_prepend_stylesheet('bundles/neutronpage/css/_style.css') %}
 
             {{ neutron_stylesheet_render() }} 
             
@@ -26,8 +27,8 @@
         
         {% block javascripts %}
 
-            {{ neutron_prepend_javascript('jquery/js/jquery.js') }}
-            {{ neutron_append_javascript('bundles/neutronpage/js/custom-main.js') }}
+            {% do neutron_prepend_javascript('jquery/js/jquery.js')  %}
+            {% do neutron_append_javascript('bundles/neutronpage/js/custom-main.js') %}
             
             {{ neutron_javascript_render() }}
 
@@ -44,19 +45,22 @@
       <!-- START Top-Toolbar -->
       <aside class="top-aside clearfix">
          <div class="center-wrap">
+         
             <div class="one_half">
                <div class="sidebar-widget">
-                  <ul class="custom-menu">
-                     <li><a href="page-template-homepage-jquery.html">Home</a></li>
-                     <li><a href="page-template-team-members.html">Team</a></li>
-                     <li><a href="page-template-sitemap.html">Sitemap</a></li>
-                     <li><a href="content-color-autumn.html">Colors</a></li>
-                     <li><a href="page-template-shortcodelist.html">Shortcodes</a></li>
-                     <li><a href="page-template-homepage-lightbox-hero.html">Pages</a></li>
-                  </ul>
+                  {% set menu_header = knp_menu_get('NeutronPageBundle:Navigation:main', ['menu.header'])%}
+                  {{ 
+                    knp_menu_render(menu_header, {
+                    'depth': 1,
+                    'ancestorClass': '',
+                    'currentClass': 'current-menu-item',
+                    'firstClass': '',
+                    'lastClass': ''
+                  })
+                }}      
                </div>
             </div>
-            <!-- END top-toolbar-left -->
+ 
    
             <div class="one_half"> 
                <div class="sidebar-widget"> 
@@ -70,6 +74,7 @@
                {% endif %}
                </div>
             </div>
+            
          </div>
          <!-- END center-wrap -->
          <div class="top-aside-shadow"></div>
@@ -84,7 +89,7 @@
             </div>
             <nav>
                 
-                {% set navigation = knp_menu_get('NeutronPageBundle:Navigation:create') %}
+                {% set navigation = knp_menu_get('NeutronPageBundle:Navigation:main') %}
                 {{ 
                     knp_menu_render(navigation, {
                     'template': 'NeutronPageBundle:Frontend/Menu:navigation.html.twig',
@@ -102,23 +107,13 @@
         
       <!-- END Header -->
 
-<!-- START small_banner -->
 <section class="small_banner">
    <div class="center-wrap">
       <p class="page-banner-heading">{% block page_banner_heading %}Default heading{% endblock %}</p>
-      <div id="banner-search">
-         <form method="get" class="searchform" action="page-template-blog-post.html#">
-            <fieldset>
-               <input type="text" name="s" class="s" value="Search..."  />
-            </fieldset>
-         </form>
-      </div>
-      <!-- END banner-search -->
-      
-      <div class="breadcrumbs">
-      <a href="page-template-homepage-jquery.html">Home</a> &rarr; <a href="page-template-blog.html">Blog</a> &rarr; <span class="current_crumb">TrueThemes &#8211; Premium Web Templates</span>
-      </div>
-      <!-- END breadcrumbs -->
+
+      {{ neutron_admin_breadcrumbs_render(knp_menu_get('NeutronPageBundle:Navigation:main'), 
+         {'template': 'NeutronPageBundle:Frontend/Menu:breadcrumbs.html.twig'}) 
+      }}
    </div>
    <!-- END center-wrap -->
    

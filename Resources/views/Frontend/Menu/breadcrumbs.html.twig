@@ -1,0 +1,17 @@
+<div class="breadcrumbs">
+    {% set separator = '&rarr;' %}
+    {% for breadcrumb in breadcrumbs %}
+    {% set item = breadcrumb['item'] %}    
+        {% if item.current %}
+            <span class="current_crumb">{{ item.label }}</span>
+        {% else %}
+            {% if item.isRoot() %}
+                {% set uri = site_url %}
+            {% else %}
+                {% set uri = item.uri %}
+            {% endif %}
+            <a href="{{ uri }}">{{ item.label }}</a> {{ separator|raw }}
+        {% endif %}	
+    {% endfor %}
+</div>
+

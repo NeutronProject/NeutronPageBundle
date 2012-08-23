@@ -16,9 +16,9 @@ use Symfony\Component\DependencyInjection\ContainerAware;
 
 class Navigation extends ContainerAware
 {
-    const IDENTIFIER = 'Navigation';
+    const IDENTIFIER = 'plugin.page.menu.main';
 
-    public function create(FactoryInterface $factory, array $options)
+    public function main(FactoryInterface $factory, array $options)
     {
         $this->container->get('neutron_component.menu.voter')
             ->setUri($this->container->get('request')->getRequestUri());
@@ -26,11 +26,13 @@ class Navigation extends ContainerAware
         $pages = $this->container->get('neutron_admin.category.manager')->buildNavigation();
         
         $menu = $factory->createFromArray($pages);
-        
+
         $this->container->get('event_dispatcher')
             ->dispatch(AdminEvents::onMenuConfigure, new ConfigureMenuEvent(self::IDENTIFIER, $factory, $menu));
         
         return $menu;
     }
+    
+
 
 }
