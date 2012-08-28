@@ -42,7 +42,7 @@ class Configuration implements ConfigurationInterface
         $node
             ->addDefaultsIfNotSet()
             ->children()
-                ->booleanNode('enable')->defaultValue(false)->end()
+                ->booleanNode('enable')->defaultFalse()->end()
                 ->scalarNode('page_class')->defaultValue('Neutron\Plugin\PageBundle\Entity\Page')->end()
                 ->scalarNode('page_image_class')->defaultValue('Neutron\Plugin\PageBundle\Entity\PageImage')->end()
                 ->scalarNode('page_controller')->defaultValue('neutron_page.controller.page.default')->end()

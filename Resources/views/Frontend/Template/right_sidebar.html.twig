@@ -24,3 +24,9 @@
  </div>		
 </div>
 {% endblock %}
+
+{% block right_sidebar %}
+ <aside class="sidebar right-sidebar">
+    {{ neutron_panel_render(plugin.getPanel('panel_sidebar_right')) }}
+ </aside>
+{% endblock %}

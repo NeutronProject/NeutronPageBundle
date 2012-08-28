@@ -46,30 +46,11 @@ class PagePlugin
                 'children_strategy' => 'self',
             ))
             ->addPanel($this->factory->createPanel(
-                'panel_sidebar_left', array(
+                'panel_sidebar_right', array(
                     'label' => $this->translator->trans('panel.sidebar.left.label', array(), 'NeutronPagePlugin'),
                     'description' => $this->translator->trans('panel.sidebar.left.description', array(), 'NeutronPagePlugin')
                 )
             ))
-            ->addPanel($this->factory->createPanel(
-                'panel_sidebar_right', array(
-                    'label' => 'panel.sidebar.right.label',
-                    'description' => 'panel.sidebar.right.description'
-                )
-            ))
-            ->addPanel($this->factory->createPanel(
-                'panel_plugin_above', array(
-                    'label' => 'panel.plugin.above.label',
-                    'description' => 'panel.plugin.above.right.description'
-                )
-            ))
-            ->addPanel($this->factory->createPanel(
-                'panel_plugin_below', array(
-                    'label' => 'panel.plugin.below.label',
-                    'description' => 'panel.plugin.below.right.description'
-                )
-            ))
-
         ;
         
         $this->dispatcher->dispatch(
