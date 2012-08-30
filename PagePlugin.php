@@ -51,6 +51,12 @@ class PagePlugin
                     'description' => $this->translator->trans('panel.sidebar.left.description', array(), 'NeutronPagePlugin')
                 )
             ))
+            ->addPanel($this->factory->createPanel(
+                'page_panel_static', array(
+                    'label' => $this->translator->trans('page.panel.static.label', array(), 'NeutronPagePlugin'),
+                    'description' => $this->translator->trans('page.panel.static.description', array(), 'NeutronPagePlugin')
+                )
+            ))
         ;
         
         $this->dispatcher->dispatch(

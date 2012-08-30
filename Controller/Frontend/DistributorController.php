@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 class DistributorController extends Controller
 {
     public function distributeAction($slug)
-    {
+    {  
         $categoryManager = $this->container->get('neutron_admin.category.manager');
         
         $pluginProvider = $this->container->get('neutron_layout.plugin_provider');
