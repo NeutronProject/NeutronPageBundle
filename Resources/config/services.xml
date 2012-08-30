@@ -24,6 +24,7 @@
             <argument type="service" id="neutron_layout.plugin.factory" />
             <argument type="service" id="router" />
             <argument type="service" id="translator" />
+            <argument type="service" id="neutron_page.manager" />
         </service>
         
         

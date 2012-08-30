@@ -1,6 +1,8 @@
 <?php
 namespace Neutron\Plugin\PageBundle;
 
+use Neutron\Plugin\PageBundle\Model\PageManagerInterface;
+
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use Neutron\LayoutBundle\Plugin\PluginFactoryInterface;
@@ -23,12 +25,16 @@ class PagePlugin
     
     protected $translator;
     
-    public function __construct(EventDispatcher $dispatcher, PluginFactoryInterface $factory, RouterInterface $router, TranslatorInterface $translator)
+    protected $manager;
+    
+    public function __construct(EventDispatcher $dispatcher, PluginFactoryInterface $factory, 
+            RouterInterface $router, TranslatorInterface $translator, PageManagerInterface $manager)
     {
         $this->dispatcher = $dispatcher;
         $this->factory = $factory;
         $this->router = $router;
         $this->translator = $translator;
+        $this->manager = $manager;
         
     }
     
@@ -42,19 +48,20 @@ class PagePlugin
             ->setAdministrationRoute('neutron_page.administration')
             ->setUpdateRoute('neutron_page.update')
             ->setDeleteRoute('neutron_page.delete')
+            ->setManager($this->manager)
             ->setTreeOptions(array(
                 'children_strategy' => 'self',
             ))
             ->addPanel($this->factory->createPanel(
-                'panel_sidebar_right', array(
+                'page_panel_sidebar_right', array(
                     'label' => $this->translator->trans('panel.sidebar.left.label', array(), 'NeutronPagePlugin'),
                     'description' => $this->translator->trans('panel.sidebar.left.description', array(), 'NeutronPagePlugin')
                 )
             ))
             ->addPanel($this->factory->createPanel(
                 'page_panel_static', array(
-                    'label' => $this->translator->trans('page.panel.static.label', array(), 'NeutronPagePlugin'),
-                    'description' => $this->translator->trans('page.panel.static.description', array(), 'NeutronPagePlugin')
+                    'label' => $this->translator->trans('panel.static.label', array(), 'NeutronPagePlugin'),
+                    'description' => $this->translator->trans('panel.static.description', array(), 'NeutronPagePlugin')
                 )
             ))
         ;
