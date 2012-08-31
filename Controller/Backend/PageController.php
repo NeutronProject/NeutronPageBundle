@@ -49,7 +49,7 @@ class PageController extends ContainerAware
         $category = $this->getCategory($id);
         $page = $this->getPage($category);
         $seo = $this->getSeo($page);
-        $panels = $this->container->get('neutron_page.layout_manager')->getPanels($id);
+        $panels = $this->container->get('neutron_page.layout_manager')->getPanelsForUpdate($id);
         
         $form = $this->container->get('neutron_page.page.form');
         $handler = $this->container->get('neutron_page.page.form.handler');

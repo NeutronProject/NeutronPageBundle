@@ -1,6 +1,8 @@
 <?php
 namespace Neutron\Plugin\PageBundle\Controller\Frontend;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 use Neutron\UserBundle\Model\BackendRoles;
 
 use Neutron\AdminBundle\Entity\MainTree;
@@ -28,6 +30,10 @@ class DistributorController extends Controller
         $pluginProvider = $this->container->get('neutron_layout.plugin_provider');
         $category = $categoryManager
             ->findCategoryBySlug($slug, true, $this->container->get('request')->getLocale());
+        
+        if (null === $category){
+            throw new NotFoundHttpException();
+        }
         
         if (false === $this->isAllowed($category)){
             throw new AccessDeniedException();

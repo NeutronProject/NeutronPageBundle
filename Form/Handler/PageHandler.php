@@ -78,16 +78,9 @@ class PageHandler implements FormHandlerInterface
                 
                 $this->onSucess();
 
-                $this->request->getSession()
-                    ->getFlashBag()->add('neutron.form.success', array(
-                        'type' => 'success',
-                        'body' => $this->translator->trans('page.flash.updated', array(), 'NeutronPageBundle')
-                    ));
-                
                 $this->result = array(
                     'success' => true,
-                    'redirect_uri' => 
-                        $this->router->generate('neutron_page.administration')
+                    'successMsg' => $this->translator->trans('page.updated', array(), 'NeutronPageBundle')
                 );
                 
                 return true;
