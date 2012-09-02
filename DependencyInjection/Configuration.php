@@ -30,8 +30,6 @@ class Configuration implements ConfigurationInterface
         
         $this->addTemplatesConfiguration($rootNode);
         
-        $this->addMediaConfiguration($rootNode);
-        
         $this->addFormSection($rootNode);
 
         return $treeBuilder;
@@ -43,10 +41,10 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
                 ->booleanNode('enable')->defaultFalse()->end()
-                ->scalarNode('page_class')->defaultValue('Neutron\Plugin\PageBundle\Entity\Page')->end()
-                ->scalarNode('page_image_class')->defaultValue('Neutron\Plugin\PageBundle\Entity\PageImage')->end()
+                ->scalarNode('page_class')->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('page_controller')->defaultValue('neutron_page.controller.page.default')->end()
                 ->scalarNode('page_manager')->defaultValue('neutron_page.manager.default')->end()
+                ->scalarNode('page_grid')->defaultValue('page_management')->end()
             ->end()
         ;
     }
@@ -54,63 +52,22 @@ class Configuration implements ConfigurationInterface
     private function addTemplatesConfiguration(ArrayNodeDefinition $node)
     {
         $node
-            ->addDefaultsIfNotSet()
             ->children()
-                ->arrayNode('templates')
-                ->defaultValue(array(
-                    'NeutronPageBundle:Frontend\Template:right_sidebar.html.twig' => 'template.right_sidebar'
-                ))
+                ->arrayNode('templates')->isRequired()
                 ->validate()
                     ->ifTrue(function($v){return empty($v);})
                     ->thenInvalid('You should provide at least one template.')
                 ->end()
                 ->useAttributeAsKey('name')
                     ->prototype('scalar')
-                ->end()
-                
+                ->end() 
+                ->cannotBeOverwritten()
+                ->isRequired()
+                ->cannotBeEmpty()
             ->end()
         ;
     }
     
-    private function addMediaConfiguration(ArrayNodeDefinition $node)
-    {
-        $node
-            ->addDefaultsIfNotSet()
-            ->children()
-                ->arrayNode('media')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->arrayNode('html_editor')
-                        ->isRequired(true)
-                        ->addDefaultsIfNotSet()
-                            ->children()
-                                ->scalarNode('security')
-                                ->defaultValue(array('ROLE_SUPER_ADMIN'))
-                                ->validate()
-                                    ->ifTrue(function($v){
-                                        return !is_array($v);
-                                    })
-                                    ->thenInvalid('Config "security must be array."')
-                                ->end()
-                                ->end()
-                            ->end()
-                        ->end()
-                        ->arrayNode('page_image')
-                        ->isRequired(true)
-                        ->addDefaultsIfNotSet()
-                            ->children()
-                                ->scalarNode('minWidth')->defaultValue(620)->end()
-                                ->scalarNode('minHeight')->defaultValue(161)->end()
-                                ->scalarNode('extensions')->defaultValue('jpeg,jpg')->end()
-                                ->scalarNode('maxSize')->defaultValue('2M')->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
-                
-            ->end()
-        ;
-    }
     
     private function addFormSection(ArrayNodeDefinition $node)
     {

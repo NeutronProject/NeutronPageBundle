@@ -22,12 +22,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Gedmo\TranslationEntity(class="Neutron\Plugin\PageBundle\Entity\Translation\PageTranslation")
- * @ORM\Table(name="neutron_page")
- * @ORM\Entity(repositoryClass="Neutron\Plugin\PageBundle\Entity\Repository\PageRepository")
- * 
+ * @ORM\MappedSuperclass 
  */
-class Page implements PageInterface 
+abstract class AbstractPage implements PageInterface 
 {
     /**
      * @var integer 
@@ -37,13 +34,6 @@ class Page implements PageInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-    
-    /**
-     * @var string 
-     *
-     * @ORM\Column(type="string", name="heading_text", length=255, nullable=true, unique=false)
-     */
-    protected $headingText;
     
     /**
      * @var string 
@@ -72,12 +62,7 @@ class Page implements PageInterface
      * Used locale to override Translation listener`s locale
      * this is not a mapped field of entity metadata, just a simple property
      */
-    private $locale;
-    
-    /**
-     * @ORM\OneToOne(targetEntity="PageImage", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
-     */
-    protected $pageImage;
+    protected $locale;
     
     /**
      * @ORM\OneToOne(targetEntity="Neutron\TreeBundle\Model\TreeNodeInterface", cascade={"all"}, orphanRemoval=true)
@@ -94,17 +79,6 @@ class Page implements PageInterface
     public function getId()
     {
         return $this->id;
-    }
-    
-    public function setHeadingText($text)
-    {
-        $this->headingText = (string) $text;
-        return $this;
-    }
-    
-    public function getHeadingText()
-    {
-        return $this->headingText;
     }
     
     public function setTitle($title)
@@ -143,17 +117,6 @@ class Page implements PageInterface
     public function setTranslatableLocale($locale)
     {
         $this->locale = $locale;
-    }
-    
-    public function setPageImage(ImageInterface $image)
-    {
-        $this->pageImage = $image;
-        return $this;
-    }
-    
-    public function getPageImage()
-    {
-        return $this->pageImage;
     }
     
     public function setCategory(TreeNodeInterface $category)

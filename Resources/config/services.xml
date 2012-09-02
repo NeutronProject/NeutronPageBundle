@@ -7,8 +7,6 @@
 
     <parameters>
         <parameter key="neutron_page.plugin.builder.class">Neutron\Plugin\PageBundle\PagePlugin</parameter>
-        <parameter key="neutron_page.event_listener.main_menu.class">Neutron\Plugin\PageBundle\EventListener\MainMenuListener</parameter>
-        <parameter key="neutron_page.event_listener.navigation_menu.class">Neutron\Plugin\PageBundle\EventListener\NavigationMenuListener</parameter>
         <parameter key="neutron_page.controller.page.default.class">Neutron\Plugin\PageBundle\Controller\Backend\PageController</parameter>
         <parameter key="neutron_page.manager.default.class">Neutron\Plugin\PageBundle\Doctrine\ORM\PageManager</parameter>
         <parameter key="neutron_page.form.type.page.class">Neutron\Plugin\PageBundle\Form\Type\PageType</parameter>
@@ -35,18 +33,7 @@
         >
             <tag name="neutron.plugin" alias="neutron.plugin.page"/>
         </service>
-        
-        <service id="neutron_page.event_listener.main_menu" class="%neutron_page.event_listener.main_menu.class%">
-        	<argument type="service" id="neutron_page.plugin" />
-        	<tag name="kernel.event_listener" event="neutron_admin.onMenuConfigure" method="onMenuConfigure"/> 
-        </service>
-        
-        <service id="neutron_page.event_listener.navigation_menu" class="%neutron_page.event_listener.navigation_menu.class%">
-        	<argument type="service" id="neutron_page.plugin" />
-        	<tag name="kernel.event_listener" event="neutron_admin.onMenuConfigure" method="onMenuConfigure"/> 
-        </service>
 
-	
         <service id="neutron_page.controller.page.default" class="%neutron_page.controller.page.default.class%">
             <call method="setContainer">
                 <argument type="service" id="service_container" />
@@ -70,9 +57,7 @@
         		
 		<service id="neutron_page.form.type.page.content" class="%neutron_page.form.type.page.content.class%">
 	            <argument>%neutron_page.page_class%</argument>
-	            <argument>%neutron_page.page_image_class%</argument>
 	            <argument>%neutron_page.templates%</argument>
-	            <argument>%neutron_page.media%</argument>
 	            <tag name="form.type" alias="neutron_page_form_type_page_content" />
 		</service>
 		
@@ -111,7 +96,7 @@
         	<argument>%locale%</argument>
         </service>
         
-        <service id="neutron_page.datagrid.factory.page_management" 
+        <service id="neutron_page.datagrid.builder.page_management" 
         	class="Neutron\Bundle\DataGridBundle\DataGrid\DataGrid"
         	factory-service="neutron_page.datagrid.page_management"
         	factory-method="build"

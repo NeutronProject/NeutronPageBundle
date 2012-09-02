@@ -42,12 +42,7 @@ class PageManager implements PageManagerInterface
     
     public function updatePage(PageInterface $page)
     {
-        $image = $page->getPageImage();
-        
-        if ($image){
-            $this->em->persist($image);
-        }
-
+        $this->em->persist($page);
         $this->em->flush();
     }
     

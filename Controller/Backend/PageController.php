@@ -34,7 +34,8 @@ class PageController extends ContainerAware
     
     public function indexAction()
     {
-        $grid = $this->container->get('neutron.datagrid')->get('page_management');
+        $grid = $this->container->get('neutron.datagrid')
+            ->get($this->container->getParameter('neutron_page.page_grid'));
     
         $template = $this->container->get('templating')
             ->render('NeutronPageBundle:Backend\Page:index.html.twig', array(

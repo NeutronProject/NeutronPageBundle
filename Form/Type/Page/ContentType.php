@@ -13,51 +13,29 @@ class ContentType extends AbstractType
 {
 
     protected $pageClass;
-    
-    protected $pageImageClass;
-    
+
     protected $templates;
     
-    protected $mediaConfig;
-    
-    public function __construct($pageClass, $pageImageClass, array $templates, array $mediaConfig)
+    protected $allowedRoles = array('ROLE_SUPER_ADMIN');
+
+    public function __construct($pageClass, array $templates)
     {
         $this->pageClass = $pageClass;
-        
-        $this->pageImageClass = $pageImageClass;
-        
+  
         $this->templates = $templates;
-        
-        $this->mediaConfig = $mediaConfig;
     }
     
     public function buildForm(FormBuilderInterface $builder, array $options) 
     {
         $builder
-           ->add('headingText', 'text', array(
-               'label' => 'form.headingText',
-               'translation_domain' => 'NeutronPageBundle'
-           ))
            ->add('title', 'text', array(
                'label' => 'form.title',
                'translation_domain' => 'NeutronPageBundle'
            ))
-           ->add('pageImage', 'neutron_image_upload', array(
-               'label' => 'form.image',
-               'required' => false,
-               'data_class' => $this->pageImageClass,
-               'translation_domain' => 'NeutronPageBundle',
-               'configs' => array(
-                   'minWidth' => $this->mediaConfig['page_image']['minWidth'],
-                   'minHeight' => $this->mediaConfig['page_image']['minHeight'],
-                   'extensions' => $this->mediaConfig['page_image']['extensions'],
-                   'maxSize' => $this->mediaConfig['page_image']['maxSize'],
-               ),
-           ))
            ->add('content', 'neutron_tinymce', array(
                'label' => 'Content',
                'translation_domain' => 'NeutronPageBundle',
-               'security' => $this->mediaConfig['html_editor']['security'],
+               'security' => $this->allowedRoles,
                'configs' => array(
                    'theme' => 'advanced', //simple
                    'skin'  => 'o2k7',

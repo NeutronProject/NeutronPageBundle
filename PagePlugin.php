@@ -54,14 +54,14 @@ class PagePlugin
             ))
             ->addPanel($this->factory->createPanel(
                 'page_panel_sidebar_right', array(
-                    'label' => $this->translator->trans('panel.sidebar.left.label', array(), 'NeutronPagePlugin'),
-                    'description' => $this->translator->trans('panel.sidebar.left.description', array(), 'NeutronPagePlugin')
+                    'label' => $this->translator->trans('panel.sidebar.right.label', array(), 'NeutronPagePlugin'),
+                    'description' => $this->translator->trans('panel.sidebar.tight.description', array(), 'NeutronPagePlugin')
                 )
             ))
             ->addPanel($this->factory->createPanel(
-                'page_panel_static', array(
-                    'label' => $this->translator->trans('panel.static.label', array(), 'NeutronPagePlugin'),
-                    'description' => $this->translator->trans('panel.static.description', array(), 'NeutronPagePlugin')
+                'page_panel_sidebar_left', array(
+                    'label' => $this->translator->trans('panel.sidebar.left.label', array(), 'NeutronPagePlugin'),
+                    'description' => $this->translator->trans('panel.sidebar.left.description', array(), 'NeutronPagePlugin')
                 )
             ))
         ;
