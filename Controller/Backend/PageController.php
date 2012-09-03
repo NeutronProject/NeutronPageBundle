@@ -47,21 +47,11 @@ class PageController extends ContainerAware
     
     public function updateAction($id)
     {   
-        $category = $this->getCategory($id);
-        $page = $this->getPage($category);
-        $seo = $this->getSeo($page);
-        $panels = $this->container->get('neutron_page.layout_manager')->getPanelsForUpdate($id);
-        
+
         $form = $this->container->get('neutron_page.page.form');
         $handler = $this->container->get('neutron_page.page.form.handler');
 
-        $form->setData(array(
-            'general' => $category, 
-            'content' => $page, 
-            'seo'     => $seo,
-            'panels'  => $panels,
-            'acl' => $this->container->get('neutron_admin.acl.manager')
-                ->getPermissions(ObjectIdentity::fromDomainObject($category))));
+        $form->setData($this->getData($id));
         
         if (null !== $handler->process()){         
             return new Response(json_encode($handler->getResult()));
@@ -150,6 +140,23 @@ class PageController extends ContainerAware
         } 
         
         return $page->getSeo();
+    }
+    
+    protected function getData($id)
+    {
+        $category = $this->getCategory($id);
+        $page = $this->getPage($category);
+        $seo = $this->getSeo($page);
+        $panels = $this->container->get('neutron_page.layout_manager')->getPanelsForUpdate($id);
+        
+        return array(
+            'general' => $category,
+            'content' => $page,
+            'seo'     => $seo,
+            'panels'  => $panels,
+            'acl' => $this->container->get('neutron_admin.acl.manager')
+                ->getPermissions(ObjectIdentity::fromDomainObject($category))
+        );
     }
     
 }

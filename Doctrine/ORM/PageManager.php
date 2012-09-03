@@ -61,4 +61,14 @@ class PageManager implements PageManagerInterface
     { 
         return $this->repository->findByCategoryId($id, $useCache, $locale);
     }
+    
+    public function get($id)
+    {
+        return $this->findPageBy(array('id' => $id));
+    }
+    
+    public function getRepository()
+    {
+        return $this->repository;
+    }
 }
