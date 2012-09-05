@@ -29,8 +29,6 @@ class PageType extends AbstractType
         ));
         $builder->add('acl', 'neutron_admin_form_acl_collection', array(
             'masks' => array(
-                'DELETE'   => 'Delete',
-                'EDIT'     => 'Edit',
                 'VIEW'     => 'View',
             ),
         ));
