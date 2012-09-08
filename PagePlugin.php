@@ -1,7 +1,7 @@
 <?php
 namespace Neutron\Plugin\PageBundle;
 
-use Neutron\Plugin\PageBundle\Model\PageManagerInterface;
+use Neutron\LayoutBundle\Model\Plugin\PluginInstanceManagerInterface;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
@@ -17,6 +17,8 @@ use Neutron\LayoutBundle\Event\ConfigurePluginEvent;
 
 class PagePlugin
 {
+    const IDENTIFIER = 'neutron.plugin.page';
+    
     protected $dispatcher;
     
     protected $factory;
@@ -28,7 +30,7 @@ class PagePlugin
     protected $manager;
     
     public function __construct(EventDispatcher $dispatcher, PluginFactoryInterface $factory, 
-            RouterInterface $router, TranslatorInterface $translator, PageManagerInterface $manager)
+            RouterInterface $router, TranslatorInterface $translator, PluginInstanceManagerInterface $manager)
     {
         $this->dispatcher = $dispatcher;
         $this->factory = $factory;
@@ -38,32 +40,21 @@ class PagePlugin
         
     }
     
-    public function create()
+    public function build()
     {
-        $plugin = $this->factory->createPlugin('neutron.plugin.page');
+        $plugin = $this->factory->createPlugin(self::IDENTIFIER);
         $plugin
             ->setLabel($this->translator->trans('plugin.page.label', array(), 'NeutronPagePlugin'))
             ->setDescription($this->translator->trans('plugin.page.description', array(), 'NeutronPagePlugin'))
-            ->setFrontController('NeutronPageBundle:Frontend\Page:index')
-            ->setAdministrationRoute('neutron_page.administration')
-            ->setUpdateRoute('neutron_page.update')
-            ->setDeleteRoute('neutron_page.delete')
+            ->setFrontController('neutron_page.controller.front:indexAction')
+            ->setAdministrationRoute('neutron_page.backend.administration')
+            ->setUpdateRoute('neutron_page.backend.page_instance.update')
+            ->setDeleteRoute('neutron_page.backend.page_instance.delete')
             ->setManager($this->manager)
             ->setTreeOptions(array(
                 'children_strategy' => 'self',
             ))
-            ->addPanel($this->factory->createPanel(
-                'page_panel_sidebar_right', array(
-                    'label' => $this->translator->trans('panel.sidebar.right.label', array(), 'NeutronPagePlugin'),
-                    'description' => $this->translator->trans('panel.sidebar.tight.description', array(), 'NeutronPagePlugin')
-                )
-            ))
-            ->addPanel($this->factory->createPanel(
-                'page_panel_sidebar_left', array(
-                    'label' => $this->translator->trans('panel.sidebar.left.label', array(), 'NeutronPagePlugin'),
-                    'description' => $this->translator->trans('panel.sidebar.left.description', array(), 'NeutronPagePlugin')
-                )
-            ))
+
         ;
         
         $this->dispatcher->dispatch(

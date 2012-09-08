@@ -4,18 +4,18 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
     
-    <route id="neutron_page.administration" pattern="/admin/page-management">
-        <default key="_controller">neutron_page.controller.page:indexAction</default>
+    <route id="neutron_page.backend.administration" pattern="/admin/plugin/page/management">
+        <default key="_controller">neutron_page.controller.backend.administration:indexAction</default>
         <requirement key="_method">GET|POST</requirement>
     </route>
 
-    <route id="neutron_page.update" pattern="/admin/page-management/update/{id}">
-        <default key="_controller">neutron_page.controller.page:updateAction</default>
+    <route id="neutron_page.backend.page_instance.update" pattern="/admin/plugin/page/update/{id}">
+        <default key="_controller">neutron_page.controller.backend.page_instance:updateAction</default>
         <requirement key="_method">GET|POST</requirement>
     </route>
 
-    <route id="neutron_page.delete" pattern="/admin/page/delete/{id}">
-        <default key="_controller">neutron_page.controller.page:deleteAction</default>
+    <route id="neutron_page.backend.page_instance.delete" pattern="/admin/plugin/page/delete/{id}">
+        <default key="_controller">neutron_page.controller.backend.page_instance:deleteAction</default>
         <requirement key="_method">GET|POST</requirement>
     </route>
     

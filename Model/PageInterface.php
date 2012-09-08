@@ -1,21 +1,13 @@
 <?php
 namespace Neutron\Plugin\PageBundle\Model;
 
-use Neutron\SeoBundle\Model\SeoInterface;
+use Neutron\LayoutBundle\Model\Plugin\PluginInstanceInterface;
 
-use Neutron\TreeBundle\Model\TreeNodeInterface;
-
-interface PageInterface
+interface PageInterface extends PluginInstanceInterface
 {
-    public function getId();
-    
     public function setTitle($title);
     
     public function getTitle();
-    
-    public function setCategory(TreeNodeInterface $category);
-    
-    public function getCategory();
     
     public function setContent($content);
     
@@ -24,10 +16,4 @@ interface PageInterface
     public function setTemplate($template);
     
     public function getTemplate();
-    
-    public function setSeo(SeoInterface $seo);
-    
-    public function getSeo();
-    
-    public function setTranslatableLocale($locale);
 }

@@ -21,10 +21,6 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('neutron_page');
-
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
         
         $this->addGeneralConfigurations($rootNode);
         
@@ -42,8 +38,11 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->booleanNode('enable')->defaultFalse()->end()
                 ->scalarNode('page_class')->isRequired()->cannotBeEmpty()->end()
-                ->scalarNode('page_controller')->defaultValue('neutron_page.controller.page.default')->end()
-                ->scalarNode('page_manager')->defaultValue('neutron_page.manager.default')->end()
+                ->scalarNode('page_instance_controller')->defaultValue('neutron_page.controller.backend.page_instance.default')->end()
+                ->scalarNode('administration_controller')->defaultValue('neutron_page.controller.backend.administration.default')->end()
+                ->scalarNode('front_controller')->defaultValue('neutron_page.controller.front.default')->end()
+                ->scalarNode('page_manager')->defaultValue('neutron_page.doctrine.page_manager.default')->end()
+                ->scalarNode('translation_domain')->defaultValue('NeutronPageBundle')->end()
                 ->scalarNode('page_grid')->defaultValue('page_management')->end()
             ->end()
         ;
@@ -76,9 +75,10 @@ class Configuration implements ConfigurationInterface
                  ->arrayNode('form')
                     ->addDefaultsIfNotSet()
                         ->children()
-                            ->scalarNode('type')->defaultValue('neutron_page_form_page')->end()
-                            ->scalarNode('handler')->defaultValue('neutron_page.form.handler.page.default')->end()
-                            ->scalarNode('name')->defaultValue('neutron_page')->end()
+                            ->scalarNode('type')->defaultValue('neutron_page_page_instance')->end()
+                            ->scalarNode('instance_type')->defaultValue('neutron_page_page_instance_instance')->end()
+                            ->scalarNode('handler')->defaultValue('neutron_page.form.handler.page_instance.default')->end()
+                            ->scalarNode('name')->defaultValue('neutron_page_page_instance')->end()
                         ->end()
                     ->end()
                 ->end()

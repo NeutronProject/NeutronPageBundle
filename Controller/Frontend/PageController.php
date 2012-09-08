@@ -1,23 +1,33 @@
 <?php
 namespace Neutron\Plugin\PageBundle\Controller\Frontend;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
+use Neutron\TreeBundle\Model\TreeNodeInterface;
+
+use Symfony\Component\DependencyInjection\ContainerAware;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 
 
-class PageController extends Controller
+class PageController extends ContainerAware
 {
     
-    public function indexAction($categoryId)
+    public function indexAction(TreeNodeInterface $category)
     {   
-        $page = $this->get('neutron_page.manager')
-            ->findByCategoryId($categoryId, true, $this->get('request')->getLocale());
+        $page = $this->container->get('neutron_page.page_manager')
+            ->findOneBy(array('category' => $category));
+        
+        if (null === $page){
+            throw new NotFoundHttpException();
+        }
         
         $layoutManager = $this->container->get('neutron_page.layout_manager');
-        $layoutManager->loadPanels($categoryId);
-        
-        $template = $this->get('templating')
+        $layoutManager->loadPanels($category->getId());
+       
+        $template = $this->container->get('templating')
             ->render($page->getTemplate(), array(
                 'page'   => $page,     
                 'plugin' => $layoutManager->getPlugin()      

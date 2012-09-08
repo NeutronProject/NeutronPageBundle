@@ -1,5 +1,5 @@
 <?php 
-namespace Neutron\Plugin\PageBundle\Form\Type\Page;
+namespace Neutron\Plugin\PageBundle\Form\Type\PageInstance;
 
 use Symfony\Component\Form\FormInterface;
 
@@ -9,20 +9,22 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\Form\AbstractType;
 
-class ContentType extends AbstractType
+class InstanceType extends AbstractType
 {
 
-    protected $pageClass;
+    protected $pageInstanceClass;
 
     protected $templates;
     
+    protected $translationDomain;
+    
     protected $allowedRoles = array('ROLE_SUPER_ADMIN');
 
-    public function __construct($pageClass, array $templates)
+    public function __construct($pageInstanceClass, array $templates, $translationDomain)
     {
-        $this->pageClass = $pageClass;
-  
+        $this->pageInstanceClass = $pageInstanceClass;
         $this->templates = $templates;
+        $this->translationDomain = $translationDomain;
     }
     
     public function buildForm(FormBuilderInterface $builder, array $options) 
@@ -30,11 +32,11 @@ class ContentType extends AbstractType
         $builder
            ->add('title', 'text', array(
                'label' => 'form.title',
-               'translation_domain' => 'NeutronPageBundle'
+               'translation_domain' => $this->translationDomain
            ))
            ->add('content', 'neutron_tinymce', array(
                'label' => 'Content',
-               'translation_domain' => 'NeutronPageBundle',
+               'translation_domain' => $this->translationDomain,
                'security' => $this->allowedRoles,
                'configs' => array(
                    'theme' => 'advanced', //simple
@@ -52,7 +54,7 @@ class ContentType extends AbstractType
                'attr' => array('class' => 'uniform'),
                'label' => 'form.template',
                'empty_value' => 'form.empty_value',
-               'translation_domain' => 'NeutronPageBundle'
+               'translation_domain' => $this->translationDomain
            ))
         ;
     }
@@ -60,7 +62,7 @@ class ContentType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => $this->pageClass,
+            'data_class' => $this->pageInstanceClass,
             'validation_groups' => function(FormInterface $form){
                 return 'page';
             },
@@ -69,7 +71,7 @@ class ContentType extends AbstractType
     
     public function getName()
     {
-        return 'neutron_page_form_type_page_content';
+        return 'neutron_page_page_instance_instance';
     }
     
 }

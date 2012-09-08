@@ -9,13 +9,11 @@
  */
 namespace Neutron\Plugin\PageBundle\Entity;
 
+use Neutron\Plugin\PageBundle\Model\PageInterface;
+
 use Neutron\SeoBundle\Model\SeoInterface;
 
 use Neutron\TreeBundle\Model\TreeNodeInterface;
-
-use Neutron\Bundle\FormBundle\Model\ImageInterface;
-
-use Neutron\Plugin\PageBundle\Model\PageInterface;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -24,7 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\MappedSuperclass 
  */
-abstract class AbstractPage implements PageInterface 
+abstract class AbstractPage implements PageInterface
 {
     /**
      * @var integer 

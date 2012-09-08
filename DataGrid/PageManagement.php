@@ -1,6 +1,8 @@
 <?php
 namespace Neutron\Plugin\PageBundle\DataGrid;
 
+use Neutron\AdminBundle\Helper\ApplicationHelper;
+
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 use Doctrine\ORM\Query;
@@ -17,42 +19,26 @@ class PageManagement
 {
 
     protected $factory;
-
-    /**
-     * @var \Doctrine\ORM\EntityManager
-     */
-    protected $em;
     
     protected $translator;
     
     protected $router;
     
-    protected $session;
+    protected $pageManager;
     
     protected $pageClass;
     
-    protected $defaultLocale;
+    protected $applicationHelper;
 
-    /**
-     * 
-     * @param FactoryInterface $factory
-     * @param EntityManager $em
-     * @param Translator $translator
-     * @param Router $router
-     * @param SessionInterface $session
-     * @param string $categoryClass
-     * @param string $pageClass
-     */
-    public function __construct (FactoryInterface $factory, EntityManager $em, 
-            Translator $translator, Router $router, SessionInterface $session, $pageClass, $defaultLocale)
+    public function __construct (FactoryInterface $factory, Translator $translator, Router $router, 
+             $pageManager, $pageClass, ApplicationHelper $applicationHelper)
     {
         $this->factory = $factory;
-        $this->em = $em;
         $this->translator = $translator;
         $this->router = $router;
-        $this->session = $session;
+        $this->pageManager = $pageManager;
         $this->pageClass = $pageClass;
-        $this->defaultLocale = $defaultLocale;
+        $this->applicationHelper = $applicationHelper;
     }
 
     public function build ()
@@ -110,43 +96,29 @@ class PageManagement
                 ),
 
             ))
-            ->setQueryBuilder($this->getQb())
+            ->setQueryBuilder($this->pageManager->getQueryBuilderForPageManagementDataGrid())
             ->setSortName('p.title')
             ->setSortOrder('asc')
             ->enablePager(true)
             ->enableViewRecords(true)
             ->enableSearchButton(true)
             ->enableEditButton(true)
-            ->setEditBtnUri($this->router->generate('neutron_page.update', array('id' => '{c.id}'), true))
+            ->setEditBtnUri($this->router->generate('neutron_page.backend.page_instance.update', array('id' => '{c.id}'), true))
             ->enableDeleteButton(true)
-            ->setDeleteBtnUri($this->router->generate('neutron_page.delete', array('id' => '{c.id}'), true))
+            ->setDeleteBtnUri($this->router->generate('neutron_page.backend.page_instance.delete', array('id' => '{c.id}'), true))
             ->setQueryHints(array(
                 Query::HINT_CUSTOM_OUTPUT_WALKER 
                     => 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker',
                 \Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE 
-                    => $this->session->get('frontend_language', $this->defaultLocale),
+                    => $this->applicationHelper->getFrontLocale(),
             ))
 
             ->setFetchJoinCollection(false)
         ;
 
-
-        
         return $dataGrid;
     }
 
-    private function getQb ()
-    {
-        $conn = $this->em->getConnection();
-        $qb = $this->em->createQueryBuilder();
-        $qb
-            ->select('p.id, c.id as category_id, p.title, c.slug, c.title as category, c.enabled, c.displayed')
-            ->from($this->pageClass, 'p')
-            ->innerJoin('p.category', 'c')
-            ->groupBy('p.id')
-        ;
-        
-        return $qb;
-    }
+
 
 }
