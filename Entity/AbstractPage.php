@@ -63,7 +63,7 @@ abstract class AbstractPage implements PageInterface
     protected $locale;
     
     /**
-     * @ORM\OneToOne(targetEntity="Neutron\TreeBundle\Model\TreeNodeInterface", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="Neutron\LayoutBundle\Model\Category\CategoryInterface", cascade={"all"}, orphanRemoval=true)
      * @ORM\JoinColumn(onDelete="CASCADE") 
      */
     protected $category;
