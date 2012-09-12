@@ -1,7 +1,7 @@
 <?php
 namespace Neutron\Plugin\PageBundle;
 
-use Neutron\LayoutBundle\Model\Plugin\PluginInstanceManagerInterface;
+use Neutron\LayoutBundle\Model\Plugin\PluginManagerInterface;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
@@ -30,7 +30,7 @@ class PagePlugin
     protected $manager;
     
     public function __construct(EventDispatcher $dispatcher, PluginFactoryInterface $factory, 
-            RouterInterface $router, TranslatorInterface $translator, PluginInstanceManagerInterface $manager)
+            RouterInterface $router, TranslatorInterface $translator, PluginManagerInterface $manager)
     {
         $this->dispatcher = $dispatcher;
         $this->factory = $factory;

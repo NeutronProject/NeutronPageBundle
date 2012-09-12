@@ -62,7 +62,7 @@ class InstanceType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => $this->pageInstanceClass,
+            'data_class' => $this->pageInstanceClass, 
             'validation_groups' => function(FormInterface $form){
                 return 'page';
             },

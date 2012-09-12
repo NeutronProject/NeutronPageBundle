@@ -17,20 +17,19 @@ class PageController extends ContainerAware
     
     public function indexAction(TreeNodeInterface $category)
     {   
-        $page = $this->container->get('neutron_page.page_manager')
-            ->findOneBy(array('category' => $category));
+        $manager = $this->container->get('neutron_page.page_manager');
+        $page = $manager->findOneBy(array('category' => $category));
         
         if (null === $page){
             throw new NotFoundHttpException();
         }
-        
-        $layoutManager = $this->container->get('neutron_page.layout_manager');
-        $layoutManager->loadPanels($category->getId());
+
+        $manager->loadPanels($category->getId());
        
         $template = $this->container->get('templating')
             ->render($page->getTemplate(), array(
                 'page'   => $page,     
-                'plugin' => $layoutManager->getPlugin()      
+                'plugin' => $manager->getPlugin()    
             ));
     
         return  new Response($template);

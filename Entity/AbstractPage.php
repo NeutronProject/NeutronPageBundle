@@ -9,11 +9,11 @@
  */
 namespace Neutron\Plugin\PageBundle\Entity;
 
+use Neutron\LayoutBundle\Model\Category\CategoryInterface;
+
 use Neutron\Plugin\PageBundle\Model\PageInterface;
 
 use Neutron\SeoBundle\Model\SeoInterface;
-
-use Neutron\TreeBundle\Model\TreeNodeInterface;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -80,13 +80,13 @@ abstract class AbstractPage implements PageInterface
     }
     
     public function setTitle($title)
-    {
+    {  
         $this->title = (string) $title;
         return $this;
     }
     
     public function getTitle()
-    {
+    {  
         return $this->title;
     }
     
@@ -117,7 +117,7 @@ abstract class AbstractPage implements PageInterface
         $this->locale = $locale;
     }
     
-    public function setCategory(TreeNodeInterface $category)
+    public function setCategory(CategoryInterface $category)
     {
         $this->category = $category;
         return $this;

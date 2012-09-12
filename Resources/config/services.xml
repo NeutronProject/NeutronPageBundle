@@ -44,12 +44,9 @@
             </call>    
  			<call method="setFormHandler">
             	<argument type="service" id="neutron_page.form.handler.page_instance" />
-            </call>
- 			<call method="setLayoutManager">
-            	<argument type="service" id="neutron_page.layout_manager" />
-            </call>
- 			<call method="setPluginInstanceManager">
-            	<argument type="service" id="neutron_page.page_manager" />
+            </call> 		
+ 			<call method="setPlugin">
+            	<argument type="service" id="neutron_page.plugin" />
             </call>
         </service>
         
@@ -71,13 +68,13 @@
 		
         <service id="neutron_page.doctrine.page_manager.default" 
         	class="%neutron_page.doctrine.page_manager.default.class%"
-        	parent="neutron_layout.doctrine.plugin_instance_manager">
-        	
-            <call method="setClassName">
+        	parent="neutron_layout.doctrine.plugin_manager"
+        >       	
+            <call method="setPluginInstanceClassName">
             	<argument>%neutron_page.page_class%</argument>
             </call>
-            <call method="setObjectManager">
-            	<argument type="service" id="object_manager" />
+            <call method="setPluginInstanceClassName">
+            	<argument>%neutron_page.page_class%</argument>
             </call>
         </service>
         
@@ -113,26 +110,17 @@
         	parent="neutron_layout.form.handler.plugin_instance" 
         	scope="request"
         >
-        	
         	<call method="setForm">
         		<argument type="service" id="neutron_page.form.page_instance" />
         	</call>
-        	<call method="setLayoutManager">
-        		<argument type="service" id="neutron_page.layout_manager" />
-        	</call>
-        	<call method="setPluginInstanceManager">
-        		<argument type="service" id="neutron_page.page_manager" />
+        	<call method="setPlugin">
+        		<argument type="service" id="neutron_page.plugin" />
         	</call>
         	<call method="setTranslationDomain">
         		<argument>%neutron_page.translation_domain%</argument>
         	</call>
         </service>
         
-    	<service id="neutron_page.layout_manager" parent="neutron_layout.layout_manager">
-            <call method="setPlugin">
-                <argument type="service" id="neutron_page.plugin" />
-            </call> 
-        </service>
         
         <service id="neutron_page.datagrid.page_management" 
         	class="%neutron_page.datagrid.page_management.class%"
