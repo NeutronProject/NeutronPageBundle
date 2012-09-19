@@ -1,7 +1,7 @@
 <?php
 namespace Neutron\Plugin\PageBundle\Doctrine;
 
-use Neutron\LayoutBundle\Doctrine\AbstractPluginManager;
+use Neutron\MvcBundle\Doctrine\AbstractPluginManager;
 
 class PageManager extends AbstractPluginManager
 {

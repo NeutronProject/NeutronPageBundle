@@ -9,7 +9,7 @@
  */
 namespace Neutron\Plugin\PageBundle\Entity;
 
-use Neutron\LayoutBundle\Model\Category\CategoryInterface;
+use Neutron\MvcBundle\Model\Category\CategoryInterface;
 
 use Neutron\Plugin\PageBundle\Model\PageInterface;
 
@@ -63,7 +63,7 @@ abstract class AbstractPage implements PageInterface
     protected $locale;
     
     /**
-     * @ORM\OneToOne(targetEntity="Neutron\LayoutBundle\Model\Category\CategoryInterface", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="Neutron\MvcBundle\Model\Category\CategoryInterface", cascade={"all"}, orphanRemoval=true)
      * @ORM\JoinColumn(onDelete="CASCADE") 
      */
     protected $category;

@@ -1,19 +1,19 @@
 <?php
 namespace Neutron\Plugin\PageBundle;
 
-use Neutron\LayoutBundle\Model\Plugin\PluginManagerInterface;
+use Neutron\MvcBundle\Model\Plugin\PluginManagerInterface;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-use Neutron\LayoutBundle\Plugin\PluginFactoryInterface;
+use Neutron\MvcBundle\Plugin\PluginFactoryInterface;
 
 use Symfony\Component\Translation\TranslatorInterface;
 
 use Symfony\Component\Routing\RouterInterface;
 
-use Neutron\LayoutBundle\LayoutEvents;
+use Neutron\MvcBundle\MvcEvents;
 
-use Neutron\LayoutBundle\Event\ConfigurePluginEvent;
+use Neutron\MvcBundle\Event\ConfigurePluginEvent;
 
 class PagePlugin
 {
@@ -58,7 +58,7 @@ class PagePlugin
         ;
         
         $this->dispatcher->dispatch(
-            LayoutEvents::onPluginConfigure, 
+            MvcEvents::onPluginConfigure, 
             new ConfigurePluginEvent($this->factory, $plugin)
         );
         

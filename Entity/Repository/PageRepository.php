@@ -1,9 +1,9 @@
 <?php
 namespace Neutron\Plugin\PageBundle\Entity\Repository;
 
-use Neutron\LayoutBundle\Entity\Repository\PluginInstanceRepository;
+use Neutron\MvcBundle\Entity\Repository\PluginInstanceRepository;
 
-class PageRepository extends PluginInstanceRepository
+class PageRepository extends PluginInstanceRepository 
 {
     public function getQueryBuilderForPageManagementDataGrid()
     {

@@ -1,7 +1,7 @@
 <?php
 namespace Neutron\Plugin\PageBundle\Model;
 
-use Neutron\LayoutBundle\Model\Plugin\PluginInstanceInterface;
+use Neutron\MvcBundle\Model\Plugin\PluginInstanceInterface;
 
 interface PageInterface extends PluginInstanceInterface
 {

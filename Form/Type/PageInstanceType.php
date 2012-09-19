@@ -3,7 +3,7 @@ namespace Neutron\Plugin\PageBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
 
-use Neutron\LayoutBundle\Form\Type\AbstractPluginInstanceType;
+use Neutron\MvcBundle\Form\Type\AbstractPluginInstanceType;
 
 class PageInstanceType extends AbstractPluginInstanceType
 {
