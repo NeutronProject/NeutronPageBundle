@@ -138,4 +138,9 @@ abstract class AbstractPage implements PageInterface
     {
         return $this->seo;
     }
+    
+    public function getIdentifier()
+    {
+        return 'neutron.plugin.page';
+    }
 }
