@@ -9,6 +9,8 @@
  */
 namespace Neutron\Plugin\PageBundle\Entity;
 
+use Neutron\Plugin\PageBundle\PagePlugin;
+
 use Neutron\MvcBundle\Model\Category\CategoryInterface;
 
 use Neutron\Plugin\PageBundle\Model\PageInterface;
@@ -141,6 +143,6 @@ abstract class AbstractPage implements PageInterface
     
     public function getIdentifier()
     {
-        return 'neutron.plugin.page';
+        return PagePlugin::IDENTIFIER;
     }
 }

@@ -1,6 +1,8 @@
 <?php
 namespace Neutron\Plugin\PageBundle\Controller\Frontend;
 
+use Neutron\Plugin\PageBundle\PagePlugin;
+
 use Neutron\MvcBundle\Model\Category\CategoryInterface;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -24,7 +26,7 @@ class PageController extends ContainerAware
             throw new NotFoundHttpException();
         }
 
-        $manager->loadPanels($category->getId(), $manager->getPlugin()->getName());
+        $manager->loadPanels($page->getId(), PagePlugin::IDENTIFIER);
        
         $template = $this->container->get('templating')
             ->render($page->getTemplate(), array(
