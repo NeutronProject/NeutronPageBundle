@@ -1,0 +1,54 @@
+{% extends "NeutronAdminBundle::layout.html.twig" %}
+
+{% block headDesc %}
+    <h1 class="icon messages">
+        {% trans from translationDomain %}header{% endtrans %} <small>some description</small>
+    </h1>
+{% endblock %}
+
+{% block body %}
+<div class="row">
+	<div class="grid12">
+		<article class="panel">
+		 	<header><h2>{% trans from translationDomain %}delete.question{% endtrans %}</h2></header>
+		 	
+            <table class="table">
+                <tbody>
+                	<tr>
+                		<td><strong>{{ 'form.title'|trans({}, translationDomain) }}</strong></td>
+                		<td class="actions">{{ entity.title }}</td>
+                	</tr>
+             
+                	<tr>
+                		<td><strong>{{ 'form.slug'|trans({}, translationDomain) }}</strong></td>
+                		<td class="actions">{{ entity.category.slug }}</td>
+                    </tr>
+   
+                	<tr>
+                		<td><strong>{{ 'form.enabled'|trans({}, translationDomain) }}</strong></td>
+                		<td class="actions">{{ entity.category.enabled|yes_no }}</td>
+                    </tr>
+                    
+                	<tr>
+                		<td><strong>{{ 'form.displayed'|trans({}, translationDomain) }}</strong></td>
+                		<td class="actions">{{ entity.category.displayed|yes_no }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div style="clear:both"></div>
+            
+            <div class="actions">
+                <div class="controls">
+                    <form action="{{ app.request.requestUri }}" method="POST">
+                        <button type="submit"  style="float:right; margin:5px;" type="submit" class="btn" name="operation" value="delete">{{ 'delete'|trans({}, translationDomain) }}</button>
+                        <a href="{{ path(plugin.administrationRoute) }}" style="float:right; margin:5px;" class="btn action" >{{ 'management.back'|trans({}, translationDomain) }}</a>
+                        <a href="{{ path('neutron_mvc.category.management') }}" style="float:right; margin:5px;" class="btn action" >{{ 'category.management.back'|trans({}, translationDomain) }}</a>
+                    </form>   
+                </div>
+            </div> 	
+		</article>
+
+	</div>
+</div>
+{% endblock %}

@@ -1,5 +1,5 @@
 <?php 
-namespace Neutron\Plugin\PageBundle\Form\Type\PageInstance;
+namespace Neutron\Plugin\PageBundle\Form\Type\Page;
 
 use Symfony\Component\Form\FormInterface;
 
@@ -9,10 +9,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\Form\AbstractType;
 
-class InstanceType extends AbstractType
+class ContentType extends AbstractType
 {
 
-    protected $pageInstanceClass;
+    protected $pageClass;
 
     protected $templates;
     
@@ -20,9 +20,9 @@ class InstanceType extends AbstractType
     
     protected $allowedRoles = array('ROLE_SUPER_ADMIN');
 
-    public function __construct($pageInstanceClass, array $templates, $translationDomain)
+    public function __construct($pageClass, array $templates, $translationDomain)
     {
-        $this->pageInstanceClass = $pageInstanceClass;
+        $this->pageClass = $pageClass;
         $this->templates = $templates;
         $this->translationDomain = $translationDomain;
     }
@@ -62,16 +62,16 @@ class InstanceType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => $this->pageInstanceClass, 
+            'data_class' => $this->pageClass, 
             'validation_groups' => function(FormInterface $form){
-                return 'page';
+                return 'default';
             },
         ));
     }
     
     public function getName()
     {
-        return 'neutron_page_page_instance_instance';
+        return 'neutron_page_content';
     }
     
 }

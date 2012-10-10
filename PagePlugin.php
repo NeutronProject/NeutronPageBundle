@@ -1,8 +1,6 @@
 <?php
 namespace Neutron\Plugin\PageBundle;
 
-use Neutron\MvcBundle\Model\Plugin\PluginManagerInterface;
-
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use Neutron\MvcBundle\Plugin\PluginFactoryInterface;
@@ -27,16 +25,16 @@ class PagePlugin
     
     protected $translator;
     
-    protected $manager;
+    protected $translationDomain;
     
     public function __construct(EventDispatcher $dispatcher, PluginFactoryInterface $factory, 
-            RouterInterface $router, TranslatorInterface $translator, PluginManagerInterface $manager)
+            RouterInterface $router, TranslatorInterface $translator, $translationDomain)
     {
         $this->dispatcher = $dispatcher;
         $this->factory = $factory;
         $this->router = $router;
         $this->translator = $translator;
-        $this->manager = $manager;
+        $this->translationDomain = $translationDomain;
         
     }
     
@@ -44,17 +42,16 @@ class PagePlugin
     {
         $plugin = $this->factory->createPlugin(self::IDENTIFIER);
         $plugin
-            ->setLabel($this->translator->trans('plugin.page.label', array(), 'NeutronPagePlugin'))
-            ->setDescription($this->translator->trans('plugin.page.description', array(), 'NeutronPagePlugin'))
-            ->setFrontController('neutron_page.controller.front:indexAction')
-            ->setAdministrationRoute('neutron_page.backend.administration')
-            ->setUpdateRoute('neutron_page.backend.page_instance.update')
-            ->setDeleteRoute('neutron_page.backend.page_instance.delete')
-            ->setManager($this->manager)
+            ->setLabel($this->translator->trans('plugin.page.label', array(), $this->translationDomain))
+            ->setDescription($this->translator->trans('plugin.page.description', array(), $this->translationDomain))
+            ->setFrontController('neutron_page.controller.frontend.page:indexAction')
+            ->setAdministrationRoute('neutron_page.backend.page')
+            ->setUpdateRoute('neutron_page.backend.page.update')
+            ->setDeleteRoute('neutron_page.backend.page.delete')
+            ->setManagerServiceId('neutron_page.page_manager')
             ->setTreeOptions(array(
                 'children_strategy' => 'self',
             ))
-
         ;
         
         $this->dispatcher->dispatch(

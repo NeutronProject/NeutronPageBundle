@@ -1,0 +1,31 @@
+{% extends "NeutronAdminBundle::layout.html.twig" %}
+
+{% block headTitle %} {% trans from translationDomain %}head_title{% endtrans %} {% endblock %}
+
+{% block headDesc %}
+    <h1 class="icon dashboard">
+        {% trans from translationDomain %}header{% endtrans %} 
+        <small>{% trans from translationDomain %}header.description{% endtrans %}</small>
+    </h1>
+{% endblock %}
+
+{% block body %}
+<div class="row">
+	<div class="grid12">
+		<article class="panel">
+		 	<header class="divider">
+		 	    <h2>{% trans from translationDomain %}subheader{% endtrans %}</h2>
+		 	</header>
+            {{ neutron_form_tabs(
+                  form, 
+                {'submit_label': 'form.save', 'translation_domain': translationDomain},
+                {
+                    'back_administration': {'label': 'form.back_administration', 'style': 'btn action', 'url': path(plugin.administrationRoute)},
+                    'back_category': {'label': 'form.back_category', 'style': 'btn action', 'url': path('neutron_mvc.category.management')},
+                }
+           ) }}
+		</article>
+
+	</div>
+</div>
+{% endblock %}

@@ -30,9 +30,9 @@ class NeutronPageExtension extends Extension
             return;
         }
 
-        $container->setAlias('neutron_page.controller.backend.page_instance', $config['page_instance_controller']);
+        $container->setAlias('neutron_page.controller.backend.page', $config['page_controller_backend']);
         $container->setAlias('neutron_page.controller.backend.administration', $config['administration_controller']);
-        $container->setAlias('neutron_page.controller.front', $config['front_controller']);
+        $container->setAlias('neutron_page.controller.frontend.page', $config['page_controller_frontend']);
         $container->setAlias('neutron_page.page_manager', $config['page_manager']);
         $container->setParameter('neutron_page.page_class', $config['page_class']);
         $container->setParameter('neutron_page.templates', $config['templates']);
@@ -40,9 +40,8 @@ class NeutronPageExtension extends Extension
         $container->setParameter('neutron_page.page_grid', $config['page_grid']);
  
         
-        $container->setAlias('neutron_page.form.handler.page_instance', $config['form']['handler']);
-        $container->setParameter('neutron_page.form.page_instance.type', $config['form']['type']);
-        $container->setParameter('neutron_page.form.page_instance.instance.type', $config['form']['instance_type']);
-        $container->setParameter('neutron_page.form.page_instance.name', $config['form']['name']);
+        $container->setAlias('neutron_page.form.handler.page', $config['form']['handler']);
+        $container->setParameter('neutron_page.form.type.page', $config['form']['type']);
+        $container->setParameter('neutron_page.form.name.page', $config['form']['name']);
     }
 }

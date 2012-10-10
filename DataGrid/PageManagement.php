@@ -1,6 +1,8 @@
 <?php
 namespace Neutron\Plugin\PageBundle\DataGrid;
 
+use Neutron\ComponentBundle\Model\ManagerInteface;
+
 use Neutron\AdminBundle\Helper\ApplicationHelper;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -18,6 +20,8 @@ use Neutron\Bundle\DataGridBundle\DataGrid\FactoryInterface;
 class PageManagement
 {
 
+    const IDENTIFIER = 'page_management';
+    
     protected $factory;
     
     protected $translator;
@@ -26,40 +30,33 @@ class PageManagement
     
     protected $pageManager;
     
-    protected $pageClass;
-    
-    protected $applicationHelper;
+    protected $translationDomain;
 
     public function __construct (FactoryInterface $factory, Translator $translator, Router $router, 
-             $pageManager, $pageClass, ApplicationHelper $applicationHelper)
+             ManagerInteface $pageManager, $pageClass, $translationDomain)
     {
         $this->factory = $factory;
         $this->translator = $translator;
         $this->router = $router;
         $this->pageManager = $pageManager;
-        $this->pageClass = $pageClass;
-        $this->applicationHelper = $applicationHelper;
+        $this->translationDomain = $translationDomain;
     }
 
     public function build ()
     {
         
-        /**
-         *
-         * @var DataGrid $dataGrid
-         */
-        $dataGrid = $this->factory->createDataGrid('page_management');
+        $dataGrid = $this->factory->createDataGrid(self::IDENTIFIER);
         $dataGrid->setCaption(
-            $this->translator->trans('grid.page_management.title',  array(), 'NeutronPageBundle')
+            $this->translator->trans('grid.page_management.title',  array(), $this->translationDomain)
         )
             ->setAutoWidth(true)
             ->setColNames(array(
                 'category_id',
-                $this->translator->trans('grid.page_management.title',  array(), 'NeutronPageBundle'),
-                $this->translator->trans('grid.page_management.slug',  array(), 'NeutronPageBundle'),
-                $this->translator->trans('grid.page_management.category',  array(), 'NeutronPageBundle'),
-                $this->translator->trans('grid.page_management.displayed',  array(), 'NeutronPageBundle'),
-                $this->translator->trans('grid.page_management.enabled',  array(), 'NeutronPageBundle'),
+                $this->translator->trans('grid.page_management.title',  array(), $this->translationDomain),
+                $this->translator->trans('grid.page_management.slug',  array(), $this->translationDomain),
+                $this->translator->trans('grid.page_management.category',  array(), $this->translationDomain),
+                $this->translator->trans('grid.page_management.displayed',  array(), $this->translationDomain),
+                $this->translator->trans('grid.page_management.enabled',  array(), $this->translationDomain),
 
             ))
             ->setColModel(array(
@@ -85,14 +82,20 @@ class PageManagement
                     'name' => 'c.displayed', 'index' => 'c.displayed', 'width' => 200, 
                     'align' => 'left', 'sortable' => true, 'search' => true,
                     'formatter' => 'checkbox',  'search' => true, 'stype' => 'select',
-                    'searchoptions' => array('value' => array(1 => 'enabled', 0 => 'disabled'))
+                    'searchoptions' => array('value' => array(
+                        1 => $this->translator->trans('grid.enabled', array(), $this->translationDomain), 
+                        0 => $this->translator->trans('grid.disabled', array(), $this->translationDomain), 
+                    ))
                 ), 
                         
                 array(
                     'name' => 'c.enabled', 'index' => 'c.enabled',  'width' => 40, 
                     'align' => 'left',  'sortable' => true, 
                     'formatter' => 'checkbox',  'search' => true, 'stype' => 'select',
-                    'searchoptions' => array('value' => array(1 => 'enabled', 0 => 'disabled'))
+                    'searchoptions' => array('value' => array(
+                        1 => $this->translator->trans('grid.enabled', array(), $this->translationDomain), 
+                        0 => $this->translator->trans('grid.disabled', array(), $this->translationDomain), 
+                    ))
                 ),
 
             ))
@@ -103,16 +106,9 @@ class PageManagement
             ->enableViewRecords(true)
             ->enableSearchButton(true)
             ->enableEditButton(true)
-            ->setEditBtnUri($this->router->generate('neutron_page.backend.page_instance.update', array('id' => '{c.id}'), true))
+            ->setEditBtnUri($this->router->generate('neutron_page.backend.page.update', array('id' => '{c.id}'), true))
             ->enableDeleteButton(true)
-            ->setDeleteBtnUri($this->router->generate('neutron_page.backend.page_instance.delete', array('id' => '{c.id}'), true))
-            ->setQueryHints(array(
-                Query::HINT_CUSTOM_OUTPUT_WALKER 
-                    => 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker',
-                \Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE 
-                    => $this->applicationHelper->getFrontLocale(),
-            ))
-
+            ->setDeleteBtnUri($this->router->generate('neutron_page.backend.page.delete', array('id' => '{c.id}'), true))
             ->setFetchJoinCollection(false)
         ;
 

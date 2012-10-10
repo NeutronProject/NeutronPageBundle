@@ -1,6 +1,8 @@
 <?php
 namespace Neutron\Plugin\PageBundle\Controller\Frontend;
 
+use Neutron\MvcBundle\Provider\PluginProvider;
+
 use Neutron\Plugin\PageBundle\PagePlugin;
 
 use Neutron\MvcBundle\Model\Category\CategoryInterface;
@@ -9,30 +11,30 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Symfony\Component\DependencyInjection\ContainerAware;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Symfony\Component\HttpFoundation\Response;
 
 
 class PageController extends ContainerAware
-{
-    
+{   
     public function indexAction(CategoryInterface $category)
     {   
-        $manager = $this->container->get('neutron_page.page_manager');
-        $page = $manager->findOneBy(array('category' => $category));
+        $plugin = $this->container->get('neutron_mvc.plugin_provider')->get(PagePlugin::IDENTIFIER);
+        $mvcManager = $this->container->get('neutron_mvc.mvc_manager');
+        $pageManager = $this->container->get($plugin->getManagerServiceId());
+        $page = $pageManager->findOneBy(array('category' => $category));
         
         if (null === $page){
             throw new NotFoundHttpException();
         }
 
-        $manager->loadPanels($page->getId(), PagePlugin::IDENTIFIER);
+        $mvcManager->loadPanels($plugin, $page->getId(), PagePlugin::IDENTIFIER);
        
         $template = $this->container->get('templating')
             ->render($page->getTemplate(), array(
                 'page'   => $page,     
-                'plugin' => $manager->getPlugin()    
-            ));
+                'plugin' => $plugin   
+            )
+        );
     
         return  new Response($template);
     }

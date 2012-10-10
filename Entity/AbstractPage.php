@@ -9,6 +9,10 @@
  */
 namespace Neutron\Plugin\PageBundle\Entity;
 
+use Neutron\SeoBundle\Model\SeoAwareInterface;
+
+use Neutron\MvcBundle\Model\CategoryAwareInterface;
+
 use Neutron\Plugin\PageBundle\PagePlugin;
 
 use Neutron\MvcBundle\Model\Category\CategoryInterface;
@@ -24,7 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\MappedSuperclass 
  */
-abstract class AbstractPage implements PageInterface
+abstract class AbstractPage implements PageInterface, CategoryAwareInterface, SeoAwareInterface
 {
     /**
      * @var integer 

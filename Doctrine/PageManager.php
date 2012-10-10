@@ -1,9 +1,9 @@
 <?php
 namespace Neutron\Plugin\PageBundle\Doctrine;
 
-use Neutron\MvcBundle\Doctrine\AbstractPluginManager;
+use Neutron\ComponentBundle\Doctrine\AbstractManager;
 
-class PageManager extends AbstractPluginManager
+class PageManager extends AbstractManager
 {
     public function getQueryBuilderForPageManagementDataGrid()
     {

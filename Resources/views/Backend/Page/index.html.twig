@@ -1,10 +1,11 @@
 {% extends "NeutronAdminBundle::layout.html.twig" %}
 
-{% block headTitle %} {% trans from "NeutronUserBundle" %}head_title{% endtrans %} {% endblock %}
+{% block headTitle %} {% trans from translationDomain %}head_title{% endtrans %} {% endblock %}
 
 {% block headDesc %}
     <h1 class="icon dashboard">
-        {% trans from "NeutronUserBundle" %}header{% endtrans %} <small>some description</small>
+        {% trans from translationDomain %}header{% endtrans %} 
+        <small>{% trans from translationDomain %}header.description{% endtrans %}</small>
     </h1>
 {% endblock %}
 
@@ -13,7 +14,7 @@
 	<div class="grid12">
 		<article class="panel">
 		 	<header class="divider">
-		 	    <h2>{% trans from "NeutronUserBundle" %}subheader{% endtrans %}</h2>
+		 	    <h2>{% trans from translationDomain %}subheader{% endtrans %}</h2>
 		 	</header>
 		 	<div id="messages">
 		 	    {% for flashMessage in app.session.flashbag.get('neutron.form.success') %}

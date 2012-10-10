@@ -6,14 +6,13 @@
     
     <parameters>
         <parameter key="neutron_page.plugin.builder.class">Neutron\Plugin\PageBundle\PagePlugin</parameter>
-        <parameter key="neutron_page.controller.backend.page_instance.default.class">Neutron\Plugin\PageBundle\Controller\Backend\PageInstanceController</parameter>
-        <parameter key="neutron_page.controller.backend.administration.default.class">Neutron\Plugin\PageBundle\Controller\Backend\AdministrationController</parameter>
-        <parameter key="neutron_page.controller.front.default.class">Neutron\Plugin\PageBundle\Controller\Frontend\PageController</parameter>
+        <parameter key="neutron_page.controller.backend.page.default.class">Neutron\Plugin\PageBundle\Controller\Backend\PageController</parameter>
+        <parameter key="neutron_page.controller.frontend.page.default.class">Neutron\Plugin\PageBundle\Controller\Frontend\PageController</parameter>
         <parameter key="neutron_page.doctrine.page_manager.default.class">Neutron\Plugin\PageBundle\Doctrine\PageManager</parameter>
-        <parameter key="neutron_page.form.type.page_instance.class">Neutron\Plugin\PageBundle\Form\Type\PluginInstance</parameter>
-        <parameter key="neutron_page.form.type.page_instance.instance.class">Neutron\Plugin\PageBundle\Form\Type\PageInstance\InstanceType</parameter>
-        <parameter key="neutron_page.form.handler.page_instance.default.class">Neutron\Plugin\PageBundle\Form\Handler\PageInstanceHandler</parameter>
-        <parameter key="neutron_page.datagrid.page_management.class">Neutron\Plugin\PageBundle\DataGrid\PageManagement</parameter>
+        <parameter key="neutron_page.form.type.page.class">Neutron\Plugin\PageBundle\Form\Type\PageType</parameter>
+        <parameter key="neutron_page.form.type.page.content.class">Neutron\Plugin\PageBundle\Form\Type\Page\ContentType</parameter>
+        <parameter key="neutron_page.form.handler.page.default.class">Neutron\Plugin\PageBundle\Form\Handler\PageHandler</parameter>
+        <parameter key="neutron_page.datagrid.builder.page_management.class">Neutron\Plugin\PageBundle\DataGrid\PageManagement</parameter>
     </parameters>
 
     <services>
@@ -23,7 +22,7 @@
             <argument type="service" id="neutron_mvc.plugin.factory" />
             <argument type="service" id="router" />
             <argument type="service" id="translator" />
-            <argument type="service" id="neutron_page.page_manager" />
+            <argument>%neutron_page.translation_domain%</argument>
         </service>
         
         
@@ -35,31 +34,16 @@
             <tag name="neutron.plugin" alias="neutron.plugin.page"/>
         </service>
 
-        <service id="neutron_page.controller.backend.page_instance.default" 
-      		class="%neutron_page.controller.backend.page_instance.default.class%"
-        	parent="neutron_mvc.controller.backend.plugin_instance" scope="request"
+        <service id="neutron_page.controller.backend.page.default" 
+      		class="%neutron_page.controller.backend.page.default.class%"
         >	
- 			<call method="setForm">
-            	<argument type="service" id="neutron_page.form.page_instance" />
-            </call>    
- 			<call method="setFormHandler">
-            	<argument type="service" id="neutron_page.form.handler.page_instance" />
-            </call> 		
- 			<call method="setPlugin">
-            	<argument type="service" id="neutron_page.plugin" />
-            </call>
-        </service>
-        
-        <service id="neutron_page.controller.backend.administration.default" 
-        	class="%neutron_page.controller.backend.administration.default.class%">
-        	
-       	    <call method="setContainer">
+ 			<call method="setContainer">
             	<argument type="service" id="service_container" />
-            </call>
+            </call>    
         </service>
         
-        <service id="neutron_page.controller.front.default" 
-        	class="%neutron_page.controller.front.default.class%">
+        <service id="neutron_page.controller.frontend.page.default" 
+        	class="%neutron_page.controller.frontend.page.default.class%">
         	
        	    <call method="setContainer">
             	<argument type="service" id="service_container" />
@@ -68,53 +52,48 @@
 		
         <service id="neutron_page.doctrine.page_manager.default" 
         	class="%neutron_page.doctrine.page_manager.default.class%"
-        	parent="neutron_mvc.doctrine.plugin_manager"
         >       	
-            <call method="setPluginInstanceClassName">
-            	<argument>%neutron_page.page_class%</argument>
-            </call>
-            <call method="setPluginInstanceClassName">
+            <call method="setClassName">
             	<argument>%neutron_page.page_class%</argument>
             </call>
         </service>
         
-		<service id="neutron_page.form.page_instance" factory-method="createNamed" factory-service="form.factory" class="Symfony\Component\Form\Form">
-            <argument>%neutron_page.form.page_instance.name%</argument>
-            <argument>%neutron_page.form.page_instance.type%</argument>
+		<service id="neutron_page.form.page" factory-method="createNamed" factory-service="form.factory" class="Symfony\Component\Form\Form">
+            <argument>%neutron_page.form.name.page%</argument>
+            <argument>%neutron_page.form.type.page%</argument>
         </service>
         
-        <service id="neutron_page.form.type.page_instance" 
-        	class="%neutron_page.form.type.page_instance.class%"
-        	parent="neutron_mvc.form.type.plugin_instance" scope="request">
-            
+        <service id="neutron_page.form.type.page"
+        	class="%neutron_page.form.type.page.class%"
+        >    
             <call method="setPlugin">
             	<argument type="service" id="neutron_page.plugin" />
             </call>
-            <call method="setInstanceType">
-            	<argument>%neutron_page.form.page_instance.instance.type%</argument>
+            
+            <call method="setAclManager">
+            	<argument type="service" id="neutron_admin.acl.manager" />
             </call>
-            <tag name="form.type" alias="neutron_page_page_instance" />
+     
+            <tag name="form.type" alias="neutron_page" />
         </service>
         		
-		<service id="neutron_page.form.type.page_instance.instance" 
-			class="%neutron_page.form.type.page_instance.instance.class%"
+		<service id="neutron_page.form.type.page.content" 
+			class="%neutron_page.form.type.page.content.class%"
 		>
             <argument>%neutron_page.page_class%</argument>
             <argument>%neutron_page.templates%</argument>
             <argument>%neutron_page.translation_domain%</argument>
-            <tag name="form.type" alias="neutron_page_page_instance_instance" />
+            <tag name="form.type" alias="neutron_page_content" />
 		</service>
 		
-        <service id="neutron_page.form.handler.page_instance.default" 
-        	class="%neutron_page.form.handler.page_instance.default.class%"
-        	parent="neutron_mvc.form.handler.plugin_instance" 
-        	scope="request"
+        <service id="neutron_page.form.handler.page.default" 
+        	class="%neutron_page.form.handler.page.default.class%"
         >
-        	<call method="setForm">
-        		<argument type="service" id="neutron_page.form.page_instance" />
+        	<call method="setContainer">
+        		<argument type="service" id="service_container" />
         	</call>
-        	<call method="setPlugin">
-        		<argument type="service" id="neutron_page.plugin" />
+        	<call method="setForm">
+        		<argument type="service" id="neutron_page.form.page" />
         	</call>
         	<call method="setTranslationDomain">
         		<argument>%neutron_page.translation_domain%</argument>
@@ -122,22 +101,20 @@
         </service>
         
         
-        <service id="neutron_page.datagrid.page_management" 
-        	class="%neutron_page.datagrid.page_management.class%"
+        <service id="neutron_page.datagrid.builder.page_management" 
+        	class="%neutron_page.datagrid.builder.page_management.class%"
         	scope="request"
        	>
         	<argument type="service" id="neutron_data_grid.factory" />
         	<argument type="service" id="translator" />
         	<argument type="service" id="router" />
         	<argument type="service" id="neutron_page.page_manager" />
-        	<argument>%neutron_page.page_class%</argument>
-        	<argument type="service" id="neutron_admin.helper.application" />
-
+        	<argument>%neutron_page.translation_domain%</argument>
         </service>
         
-        <service id="neutron_page.datagrid.builder.page_management" 
+        <service id="neutron_page.datagrid.page_management" 
         	class="Neutron\Bundle\DataGridBundle\DataGrid\DataGrid"
-        	factory-service="neutron_page.datagrid.page_management"
+        	factory-service="neutron_page.datagrid.builder.page_management"
         	factory-method="build"
         >
         	<tag name="neutron_data_grid.datagrid" alias="page_management" />
