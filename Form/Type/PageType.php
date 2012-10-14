@@ -1,6 +1,10 @@
 <?php
 namespace Neutron\Plugin\PageBundle\Form\Type;
 
+use Neutron\MvcBundle\Plugin\PluginInterface;
+
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 use Symfony\Component\Form\AbstractType;
 
 use Symfony\Component\Form\FormBuilderInterface;

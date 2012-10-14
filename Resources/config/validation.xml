@@ -10,21 +10,21 @@
         	<constraint name="NotBlank">
                 <option name="message">title.blank</option>
                 <option name="groups">
-                    <value>page</value>
+                    <value>default</value>
                 </option>
             </constraint>
             <constraint name="MinLength">
                 <option name="limit">2</option>
                 <option name="message">title.short</option>
                 <option name="groups">
-                    <value>page</value>
+                    <value>default</value>
                 </option>
             </constraint>
             <constraint name="MaxLength">
                 <option name="limit">255</option>
                 <option name="message">title.long</option>
                 <option name="groups">
-                    <value>page</value>
+                    <value>default</value>
                 </option>
             </constraint>
         </property>
@@ -33,14 +33,14 @@
         	<constraint name="NotBlank">
                 <option name="message">content.blank</option>
                 <option name="groups">
-                    <value>page</value>
+                    <value>default</value>
                 </option>
             </constraint>
             <constraint name="MinLength">
                 <option name="limit">10</option>
                 <option name="message">content.short</option>
                 <option name="groups">
-                    <value>page</value>
+                    <value>default</value>
                 </option>
             </constraint>
         </property>
@@ -49,7 +49,7 @@
         	<constraint name="NotBlank">
                 <option name="message">template.blank</option>
                 <option name="groups">
-                    <value>page</value>
+                    <value>default</value>
                 </option>
             </constraint>
         </property>

@@ -75,7 +75,7 @@ abstract class AbstractPage implements PageInterface, CategoryAwareInterface, Se
     protected $category;
     
     /**
-     * @ORM\OneToOne(targetEntity="Neutron\SeoBundle\Entity\Seo", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="Neutron\SeoBundle\Entity\Seo", cascade={"all"}, orphanRemoval=true)
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     protected $seo;

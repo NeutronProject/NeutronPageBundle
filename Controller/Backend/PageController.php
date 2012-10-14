@@ -1,6 +1,8 @@
 <?php
 namespace Neutron\Plugin\PageBundle\Controller\Backend;
 
+use Neutron\MvcBundle\Model\Category\CategoryInterface;
+
 use Neutron\SeoBundle\Model\SeoAwareInterface;
 
 use Neutron\Plugin\PageBundle\Model\PageInterface;
@@ -26,11 +28,12 @@ class PageController extends ContainerAware
     public function indexAction()
     {
         $grid = $this->container->get('neutron.datagrid')
-            ->get($this->container->getParameter('neutron_page.page_grid'));
+            ->get($this->container->getParameter('neutron_page.page_datagrid'));
     
         $template = $this->container->get('templating')->render(
             'NeutronPageBundle:Backend\Page:index.html.twig', array(
-                'grid' => $grid
+                'grid' => $grid,
+                'translationDomain' => $this->container->getParameter('neutron_page.translation_domain')
             )
         );
     
@@ -52,7 +55,7 @@ class PageController extends ContainerAware
             'NeutronPageBundle:Backend\Page:update.html.twig', array(
                 'form' => $form->createView(),
                 'plugin' => $plugin,
-                'translationDomain' => $this->container->get('neutron_page.translationDomain')
+                'translationDomain' => $this->container->getParameter('neutron_page.translation_domain')
             )
         );
     
@@ -63,31 +66,31 @@ class PageController extends ContainerAware
     {
         $plugin = $this->container->get('neutron_mvc.plugin_provider')->get(PagePlugin::IDENTIFIER);
         $category = $this->getCategory($id);
-        $page = $this->getPage($category);
+        $entity = $this->getEntity($category);
     
         if ($this->container->get('request')->getMethod() == 'POST'){
-            $this->doDelete($category, $page);
+            $this->doDelete($plugin, $entity);
             $redirectUrl = $this->container->get('router')->generate('neutron_mvc.category.management');
             return new RedirectResponse($redirectUrl);
         }
     
         $template = $this->container->get('templating')->render(
-            'NeutronMvcBundle:Backend\PluginInstance:delete.html.twig', array(
-                'entity' => $page,
+            'NeutronPageBundle:Backend\Page:delete.html.twig', array(
+                'entity' => $entity,
                 'plugin' => $plugin,
-                'translationDomain' => $this->container->get('neutron_page.translationDomain')
+                'translationDomain' => $this->container->getParameter('neutron_page.translation_domain')
             )
         );
     
         return  new Response($template);
     }
     
-    protected function doDelete(PluginInterface $plugin, PageInterface $page)
+    protected function doDelete(PageInterface $page)
     {
         $this->container->get('neutron_admin.acl.manager')
             ->deleteObjectPermissions(ObjectIdentity::fromDomainObject($page->getCategory()));
     
-        $plugin->getManager()->delete($page, true);
+        $this->container->get('neutron_page.page_manager')->delete($page, true);
     }
     
     protected function getCategory($id)
@@ -104,29 +107,29 @@ class PageController extends ContainerAware
         return $category;
     }
     
-    protected function getPage(CategoryInterface $category)
+    protected function getEntity(CategoryInterface $category)
     {
-        $pageManager = $this->container->get('neutron_page.page_manager');
-        $page = $pageManager->findOneBy(array('category' => $category));
+        $manager = $this->container->get('neutron_page.page_manager');
+        $entity = $manager->findOneBy(array('category' => $category));
     
-        if (!$page){
+        if (!$entity){
             throw new NotFoundHttpException();
         }
     
-        return $page;
+        return $entity;
     }
     
     
-    protected function getSeo(SeoAwareInterface $page)
+    protected function getSeo(SeoAwareInterface $entity)
     {
     
-        if(!$page->getSeo() instanceof SeoInterface){
+        if(!$entity->getSeo() instanceof SeoInterface){
             $manager = $this->container->get('neutron_seo.manager');
             $seo = $this->container->get('neutron_seo.manager')->createSeo();
-            $page->setSeo($seo);
+            $entity->setSeo($seo);
         }
     
-        return $page->getSeo();
+        return $entity->getSeo();
     }
     
     protected function getData($id)
@@ -134,13 +137,13 @@ class PageController extends ContainerAware
         $mvcManager = $this->container->get('neutron_mvc.mvc_manager');
         $plugin = $this->container->get('neutron_mvc.plugin_provider')->get(PagePlugin::IDENTIFIER);
         $category = $this->getCategory($id);
-        $page = $this->getPage($category);
-        $seo = $this->getSeo($page);
-        $panels = $mvcManager->getPanelsForUpdate($plugin, $page->getId(), $this->plugin->getName());
+        $entity = $this->getEntity($category);
+        $seo = $this->getSeo($entity);
+        $panels = $mvcManager->getPanelsForUpdate($plugin, $entity->getId(), $plugin->getName());
     
         return array(
             'general' => $category,
-            'content' => $page,
+            'content' => $entity,
             'seo'     => $seo,
             'panels'  => $panels,
             'acl' => $this->container->get('neutron_admin.acl.manager')

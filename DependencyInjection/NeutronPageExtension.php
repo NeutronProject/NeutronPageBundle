@@ -31,13 +31,12 @@ class NeutronPageExtension extends Extension
         }
 
         $container->setAlias('neutron_page.controller.backend.page', $config['page_controller_backend']);
-        $container->setAlias('neutron_page.controller.backend.administration', $config['administration_controller']);
         $container->setAlias('neutron_page.controller.frontend.page', $config['page_controller_frontend']);
         $container->setAlias('neutron_page.page_manager', $config['page_manager']);
         $container->setParameter('neutron_page.page_class', $config['page_class']);
         $container->setParameter('neutron_page.templates', $config['templates']);
         $container->setParameter('neutron_page.translation_domain', $config['translation_domain']);
-        $container->setParameter('neutron_page.page_grid', $config['page_grid']);
+        $container->setParameter('neutron_page.page_datagrid', $config['page_datagrid']);
  
         
         $container->setAlias('neutron_page.form.handler.page', $config['form']['handler']);

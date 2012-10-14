@@ -35,6 +35,9 @@ class PageHandler extends AbstractFormHandler
     
     protected function getRedirectUrl()
     {
-        return $this->container->get('router')->generate('neutron_page.backend.page');
+        $plugin = $this->container->get('neutron_mvc.plugin_provider')
+            ->get(PagePlugin::IDENTIFIER);
+        
+        return $this->container->get('router')->generate($plugin->getAdministrationRoute());
     }
 }

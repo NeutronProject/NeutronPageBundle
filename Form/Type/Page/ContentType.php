@@ -35,7 +35,7 @@ class ContentType extends AbstractType
                'translation_domain' => $this->translationDomain
            ))
            ->add('content', 'neutron_tinymce', array(
-               'label' => 'Content',
+               'label' => 'form.content',
                'translation_domain' => $this->translationDomain,
                'security' => $this->allowedRoles,
                'configs' => array(

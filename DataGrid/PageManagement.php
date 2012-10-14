@@ -1,6 +1,8 @@
 <?php
 namespace Neutron\Plugin\PageBundle\DataGrid;
 
+use Neutron\Plugin\PageBundle\Model\PageManagerInterface;
+
 use Neutron\ComponentBundle\Model\ManagerInteface;
 
 use Neutron\AdminBundle\Helper\ApplicationHelper;
@@ -33,7 +35,7 @@ class PageManagement
     protected $translationDomain;
 
     public function __construct (FactoryInterface $factory, Translator $translator, Router $router, 
-             ManagerInteface $pageManager, $pageClass, $translationDomain)
+             PageManagerInterface $pageManager, $translationDomain)
     {
         $this->factory = $factory;
         $this->translator = $translator;

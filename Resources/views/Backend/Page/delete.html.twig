@@ -2,7 +2,8 @@
 
 {% block headDesc %}
     <h1 class="icon messages">
-        {% trans from translationDomain %}header{% endtrans %} <small>some description</small>
+        {% trans from translationDomain %}header{% endtrans %} 
+        <small>{% trans from translationDomain %}header.description{% endtrans %}</small>
     </h1>
 {% endblock %}
 

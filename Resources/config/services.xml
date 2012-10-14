@@ -56,6 +56,9 @@
             <call method="setClassName">
             	<argument>%neutron_page.page_class%</argument>
             </call>
+            <call method="setObjectManager">
+            	<argument type="service" id="object_manager" />
+            </call>
         </service>
         
 		<service id="neutron_page.form.page" factory-method="createNamed" factory-service="form.factory" class="Symfony\Component\Form\Form">

@@ -24,9 +24,9 @@ class Configuration implements ConfigurationInterface
         
         $this->addGeneralConfigurations($rootNode);
         
-        $this->addTemplatesConfiguration($rootNode);
+        $this->addTemplatesConfigurations($rootNode);
         
-        $this->addFormSection($rootNode);
+        $this->addFormConfigurations($rootNode);
 
         return $treeBuilder;
     }
@@ -39,16 +39,15 @@ class Configuration implements ConfigurationInterface
                 ->booleanNode('enable')->defaultFalse()->end()
                 ->scalarNode('page_class')->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('page_controller_backend')->defaultValue('neutron_page.controller.backend.page.default')->end()
-                ->scalarNode('administration_controller')->defaultValue('neutron_page.controller.backend.administration.default')->end()
                 ->scalarNode('page_controller_frontend')->defaultValue('neutron_page.controller.frontend.page.default')->end()
                 ->scalarNode('page_manager')->defaultValue('neutron_page.doctrine.page_manager.default')->end()
                 ->scalarNode('translation_domain')->defaultValue('NeutronPageBundle')->end()
-                ->scalarNode('page_grid')->defaultValue('page_management')->end()
+                ->scalarNode('page_datagrid')->defaultValue('page_management')->end()
             ->end()
         ;
     }
     
-    private function addTemplatesConfiguration(ArrayNodeDefinition $node)
+    private function addTemplatesConfigurations(ArrayNodeDefinition $node)
     {
         $node
             ->children()
@@ -68,7 +67,7 @@ class Configuration implements ConfigurationInterface
     }
     
     
-    private function addFormSection(ArrayNodeDefinition $node)
+    private function addFormConfigurations(ArrayNodeDefinition $node)
     {
         $node
             ->children()
