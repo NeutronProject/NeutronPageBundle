@@ -69,7 +69,7 @@ class PageController extends ContainerAware
         $entity = $this->getEntity($category);
     
         if ($this->container->get('request')->getMethod() == 'POST'){
-            $this->doDelete($plugin, $entity);
+            $this->doDelete($entity);
             $redirectUrl = $this->container->get('router')->generate('neutron_mvc.category.management');
             return new RedirectResponse($redirectUrl);
         }
