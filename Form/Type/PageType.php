@@ -1,6 +1,8 @@
 <?php
 namespace Neutron\Plugin\PageBundle\Form\Type;
 
+use Neutron\AdminBundle\Acl\AclManagerInterface;
+
 use Neutron\MvcBundle\Plugin\PluginInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -21,7 +23,7 @@ class PageType extends AbstractType
         return $this;
     }
     
-    public function setAclManager($aclManager)
+    public function setAclManager(AclManagerInterface $aclManager)
     {
         $this->aclManager = $aclManager;
         return $this;
