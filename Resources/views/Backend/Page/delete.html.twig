@@ -43,7 +43,6 @@
                 <div class="controls">
                     <form action="{{ app.request.requestUri }}" method="POST">
                         <button type="submit"  style="float:right; margin:5px;" type="submit" class="btn" name="operation" value="delete">{{ 'delete'|trans({}, translationDomain) }}</button>
-                        <a href="{{ path(plugin.administrationRoute) }}" style="float:right; margin:5px;" class="btn action" >{{ 'management.back'|trans({}, translationDomain) }}</a>
                         <a href="{{ path('neutron_mvc.category.management') }}" style="float:right; margin:5px;" class="btn action" >{{ 'category.management.back'|trans({}, translationDomain) }}</a>
                     </form>   
                 </div>

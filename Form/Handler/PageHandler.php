@@ -15,16 +15,10 @@ class PageHandler extends AbstractFormHandler
 {    
     protected function onSuccess()
     {   
-        $plugin = $this->container->get('neutron_mvc.plugin_provider')->get(PagePlugin::IDENTIFIER);
         $content = $this->form->get('content')->getData();
         $category = $content->getCategory();
 
-        $this->container->get($plugin->getManagerServiceId())->update($content);
-        
-        if (count($plugin->getPanels()) > 0){
-            $panels = $this->form->get('panels')->getData();
-            $this->container->get('neutron_mvc.mvc_manager')->updatePanels($content->getId(), $panels);
-        }
+        $this->container->get('neutron_page.page_manager')->update($content);
         
         $acl = $this->form->get('acl')->getData();
         $this->container->get('neutron_admin.acl.manager')
@@ -35,9 +29,6 @@ class PageHandler extends AbstractFormHandler
     
     protected function getRedirectUrl()
     {
-        $plugin = $this->container->get('neutron_mvc.plugin_provider')
-            ->get(PagePlugin::IDENTIFIER);
-        
-        return $this->container->get('router')->generate($plugin->getAdministrationRoute());
+        return $this->container->get('router')->generate('neutron_page.backend.page');
     }
 }

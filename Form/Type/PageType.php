@@ -35,13 +35,6 @@ class PageType extends AbstractType
         $builder->add('content', 'neutron_page_content');
         $builder->add('seo', 'neutron_seo');
     
-        if (count($this->plugin->getPanels()) > 0){
-            $builder->add('panels', 'neutron_panels', array(
-                'plugin' => $this->plugin->getName(),
-                'pluginIdentifier' => $this->plugin->getName(),
-            ));
-        }
-    
         if ($this->aclManager->isAclEnabled()){
             $builder->add('acl', 'neutron_admin_form_acl_collection', array(
                 'masks' => array(

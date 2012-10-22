@@ -42,7 +42,6 @@ class PageController extends ContainerAware
     
     public function updateAction($id)
     {
-        $plugin = $this->container->get('neutron_mvc.plugin_provider')->get(PagePlugin::IDENTIFIER);
         $form = $this->container->get('neutron_page.form.page');
         $handler = $this->container->get('neutron_page.form.handler.page');
         $form->setData($this->getData($id));
@@ -54,7 +53,6 @@ class PageController extends ContainerAware
         $template = $this->container->get('templating')->render(
             'NeutronPageBundle:Backend\Page:update.html.twig', array(
                 'form' => $form->createView(),
-                'plugin' => $plugin,
                 'translationDomain' => $this->container->getParameter('neutron_page.translation_domain')
             )
         );
@@ -64,7 +62,6 @@ class PageController extends ContainerAware
     
     public function deleteAction($id)
     {
-        $plugin = $this->container->get('neutron_mvc.plugin_provider')->get(PagePlugin::IDENTIFIER);
         $category = $this->getCategory($id);
         $entity = $this->getEntity($category);
     
@@ -77,7 +74,6 @@ class PageController extends ContainerAware
         $template = $this->container->get('templating')->render(
             'NeutronPageBundle:Backend\Page:delete.html.twig', array(
                 'entity' => $entity,
-                'plugin' => $plugin,
                 'translationDomain' => $this->container->getParameter('neutron_page.translation_domain')
             )
         );
@@ -134,18 +130,14 @@ class PageController extends ContainerAware
     
     protected function getData($id)
     {
-        $mvcManager = $this->container->get('neutron_mvc.mvc_manager');
-        $plugin = $this->container->get('neutron_mvc.plugin_provider')->get(PagePlugin::IDENTIFIER);
         $category = $this->getCategory($id);
         $entity = $this->getEntity($category);
         $seo = $this->getSeo($entity);
-        $panels = $mvcManager->getPanelsForUpdate($plugin, $entity->getId(), $plugin->getName());
     
         return array(
             'general' => $category,
             'content' => $entity,
             'seo'     => $seo,
-            'panels'  => $panels,
             'acl' => $this->container->get('neutron_admin.acl.manager')
                 ->getPermissions(ObjectIdentity::fromDomainObject($category))
         );
