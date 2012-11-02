@@ -44,7 +44,7 @@ class PagePlugin
         $plugin
             ->setLabel($this->translator->trans('plugin.page.label', array(), $this->translationDomain))
             ->setDescription($this->translator->trans('plugin.page.description', array(), $this->translationDomain))
-            ->setFrontController('neutron_page.controller.frontend.page:indexAction')
+            ->setFrontendRoute('neutron_page.frontend.page')
             ->setUpdateRoute('neutron_page.backend.page.update')
             ->setDeleteRoute('neutron_page.backend.page.delete')
             ->setManagerServiceId('neutron_page.page_manager')
