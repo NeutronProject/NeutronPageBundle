@@ -26,7 +26,7 @@
         </service>
         
         
-        <service id="neutron_page.plugin" 
+        <service id="neutron_page.plugin"  
         	class="Neutron\MvcBundle\Plugin\PluginFactory"
         	factory-service="neutron_page.plugin.builder"
         	factory-method="build"
