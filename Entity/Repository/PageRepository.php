@@ -1,9 +1,9 @@
 <?php
 namespace Neutron\Plugin\PageBundle\Entity\Repository;
 
-use Neutron\MvcBundle\Entity\Repository\PluginInstanceRepository;
+use Gedmo\Translatable\Entity\Repository\TranslationRepository;
 
-class PageRepository extends PluginInstanceRepository 
+class PageRepository extends TranslationRepository
 {
     public function getQueryBuilderForPageManagementDataGrid()
     {
@@ -14,6 +14,13 @@ class PageRepository extends PluginInstanceRepository
             ->innerJoin('p.category', 'c')
             ->groupBy('p.id')
         ;
+        
+        return $qb;
+    }
+    
+    public function getQueryBuilderForSearchProvider()
+    {
+        $qb = $this->createQueryBuilder('p');        
         
         return $qb;
     }

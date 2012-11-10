@@ -13,6 +13,8 @@
 		<parameter key="neutron_page.form.type.page.content.class">Neutron\Plugin\PageBundle\Form\Type\Page\ContentType</parameter>
 		<parameter key="neutron_page.form.handler.page.default.class">Neutron\Plugin\PageBundle\Form\Handler\PageHandler</parameter>
 		<parameter key="neutron_page.datagrid.builder.page_management.class">Neutron\Plugin\PageBundle\DataGrid\PageManagement</parameter>
+		<parameter key="neutron_page.search_provider.page.class">Neutron\Plugin\PageBundle\Doctrine\PageSearchProvider</parameter>
+		<parameter key="neutron_page.elastic_search.page_search_manager.class">Neutron\Plugin\PageBundle\ElasticSearch\PageSearchManager</parameter>
 	</parameters>
 
 	<services>
@@ -108,6 +110,23 @@
 			factory-method="build">
 			<tag name="neutron_data_grid.datagrid" alias="page_management" />
 		</service>
+		
+		<service id="neutron_page.search_provider.page" class="%neutron_page.search_provider.page.class%">
+        	<argument type="service" id="foq_elastica.index.default.page" />
+        	<argument type="service" id="neutron_page.page_manager" />
+        	<argument>%neutron_admin.use_translatable%</argument>
+        	<argument>%neutron_admin.languages.frontend%</argument>
+        	
+        	<tag name="foq_elastica.provider" index="default" type="page" />
+        </service>
+        
+        <service id="neutron_page.elastic_search.page_search_manager" 
+        	class="%neutron_page.elastic_search.page_search_manager.class%"
+       	>
+	        <call method="setContainer">
+	        	<argument type="service" id="service_container" />
+	        </call>
+        </service>
 
 	</services>
 

@@ -57,6 +57,7 @@ class ContentType extends AbstractType
                'translation_domain' => $this->translationDomain
            ))
         ;
+           
     }
     
     public function setDefaultOptions(OptionsResolverInterface $resolver)

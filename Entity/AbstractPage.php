@@ -9,6 +9,8 @@
  */
 namespace Neutron\Plugin\PageBundle\Entity;
 
+use Neutron\AdminBundle\Model\SearchableInterface;
+
 use Neutron\SeoBundle\Model\SeoAwareInterface;
 
 use Neutron\MvcBundle\Model\CategoryAwareInterface;
@@ -28,7 +30,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\MappedSuperclass 
  */
-abstract class AbstractPage implements PageInterface, CategoryAwareInterface, SeoAwareInterface
+abstract class AbstractPage implements PageInterface, CategoryAwareInterface, SeoAwareInterface, SearchableInterface
 {
     /**
      * @var integer 
@@ -38,6 +40,14 @@ abstract class AbstractPage implements PageInterface, CategoryAwareInterface, Se
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+    
+    /**
+     * @var string 
+     *
+     * @Gedmo\Translatable
+     * @ORM\Column(type="string", name="search_id", length=32, nullable=true, unique=false)
+     */
+    protected $searchId;
     
     /**
      * @var string 
@@ -69,7 +79,7 @@ abstract class AbstractPage implements PageInterface, CategoryAwareInterface, Se
     protected $locale;
     
     /**
-     * @ORM\OneToOne(targetEntity="Neutron\MvcBundle\Model\Category\CategoryInterface", cascade={"all"}, orphanRemoval=true, fetch="EAGER")
+     * @ORM\OneToOne(targetEntity="Neutron\MvcBundle\Model\Category\CategoryInterface", cascade={"all"}, orphanRemoval=true)
      * @ORM\JoinColumn(onDelete="CASCADE") 
      */
     protected $category;
@@ -83,6 +93,21 @@ abstract class AbstractPage implements PageInterface, CategoryAwareInterface, Se
     public function getId()
     {
         return $this->id;
+    }
+    
+    public function getSearchId()
+    {
+        return $this->searchId;
+    }
+    
+    public function setSearchId($searchId)
+    {
+        $this->searchId = $searchId;
+    }
+    
+    public function getSearchPath()
+    {
+        return 'default/page';
     }
     
     public function setTitle($title)
@@ -123,6 +148,11 @@ abstract class AbstractPage implements PageInterface, CategoryAwareInterface, Se
         $this->locale = $locale;
     }
     
+    public function getTranslatableLocale()
+    {
+        return $this->locale;
+    }
+    
     public function setCategory(CategoryInterface $category)
     {
         $this->category = $category;
@@ -145,8 +175,4 @@ abstract class AbstractPage implements PageInterface, CategoryAwareInterface, Se
         return $this->seo;
     }
     
-    public function getIdentifier()
-    {
-        return PagePlugin::IDENTIFIER;
-    }
 }

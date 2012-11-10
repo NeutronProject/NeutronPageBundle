@@ -3,7 +3,7 @@ namespace Neutron\Plugin\PageBundle\Model;
 
 use Neutron\MvcBundle\Model\Plugin\PluginInstanceInterface;
 
-interface PageInterface extends PluginInstanceInterface
+interface PageInterface
 {
     public function setTitle($title);
     

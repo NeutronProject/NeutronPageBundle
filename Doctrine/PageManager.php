@@ -11,4 +11,9 @@ class PageManager extends AbstractManager implements PageManagerInterface
     {
         return $this->repository->getQueryBuilderForPageManagementDataGrid();
     }
+    
+    public function getQueryBuilderForSearchProvider()
+    {
+        return $this->repository->getQueryBuilderForSearchProvider();
+    }
 }
